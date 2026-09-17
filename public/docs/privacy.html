@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#edf4ec"><meta name="description" content="Privacy, plainly.. Forevane is an independent no-stakes forecasting pilot on Robinhood Chain testnet."><title>Privacy, plainly. | Forevane</title><style>
+:root{color-scheme:light;--ink:#20342b;--muted:#607266;--mint:#d5f3df;--line:#d8e3d9;--paper:#f8faf7}
+*{box-sizing:border-box}html{background:var(--paper);scroll-behavior:smooth;scroll-padding-top:28px}
+body{margin:0;color:var(--ink);font:16px/1.75 Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-underline-offset:4px;text-decoration-thickness:1px}a:hover{color:#29683f}
+a:focus-visible,summary:focus-visible,.table-wrap:focus-visible{outline:3px solid #367346;outline-offset:5px}
+.skip{position:absolute;top:-60px;left:20px;background:var(--ink);color:white;padding:10px 16px;z-index:5}.skip:focus{top:12px}
+.topbar{max-width:1200px;margin:auto;padding:27px 40px;display:flex;gap:20px;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.brand{font-size:27px;letter-spacing:-1.2px;font-weight:800;text-decoration:none;display:flex;align-items:center;gap:11px}.brand-icon{width:29px;height:29px;display:block}.brand-icon svg{width:100%;height:100%;display:block}
+.nav{display:flex;gap:23px;align-items:center;font-size:12px}.nav a{text-decoration:none}.status{font-size:10px;letter-spacing:1.2px;background:var(--mint);padding:7px 10px;white-space:nowrap}
+.document{max-width:1000px;margin:0 auto;padding:67px 56px 76px}.label{text-transform:uppercase;letter-spacing:2px;font-size:11px;margin-bottom:26px;color:var(--muted)}
+h1,h2,h3{line-height:1.16;font-weight:600}h1{font-size:clamp(43px,5.6vw,70px);letter-spacing:-3px;max-width:850px;margin:0 0 28px}h2{font-size:30px;letter-spacing:-1px;margin:53px 0 21px;scroll-margin-top:25px}h3{font-size:20px;letter-spacing:-.35px;margin:32px 0 12px}
+h1+h2{font-size:36px;margin:0 0 26px;font-weight:400}p{margin:16px 0}strong{font-weight:700}ul,ol{padding-left:24px;margin:20px 0}li{padding-left:4px;margin:10px 0}blockquote{border-left:3px solid #559a6a;margin:25px 0;padding:4px 22px;background:#edf5ed}
+.table-wrap{width:100%;overflow-x:auto;margin:24px 0;border:1px solid var(--line);border-radius:8px}table{border-collapse:collapse;width:100%;font-size:13px;line-height:1.55}th{text-align:left;font-weight:700;background:#e8f1e7}td,th{vertical-align:top;padding:13px 14px;border-bottom:1px solid var(--line)}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#f1f5ef}
+code{font:12px/1.5 Consolas,monospace;background:#e8f0e7;padding:3px 5px;overflow-wrap:anywhere}pre{white-space:pre-wrap;overflow-wrap:anywhere}pre code{display:block;padding:16px}
+.contents{margin:32px 0 42px;padding:16px 20px;border:1px solid var(--line);border-radius:8px;font-size:13px;background:#f0f6ee}.contents summary{cursor:pointer;font-weight:700}.contents ul{margin:14px 0 0;list-style:none;padding:0}.contents li{margin:6px 0}.contents li li{margin-left:16px}.contents a{text-decoration:none}
+.foot{max-width:1120px;margin:0 auto;padding:29px 40px 38px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:24px;font-size:11px;color:var(--muted)}.foot a{white-space:nowrap}.foot-links{display:flex;gap:18px}.version{font-size:11px;color:var(--muted);border-top:1px solid var(--line);padding-top:25px;margin-top:46px}
+@media(max-width:650px){body{font-size:15px}.topbar{padding:20px 22px}.brand{font-size:24px}.nav{gap:13px}.nav .secondary{display:none}.status{font-size:8px}.document{padding:43px 24px 55px}h1{letter-spacing:-2px}h2{font-size:26px;margin-top:41px}h1+h2{font-size:29px}table{font-size:12px;min-width:480px}.foot{padding:23px 24px;display:block}.foot-links{margin-top:14px}.label{font-size:10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@page{size:A4;margin:18mm 15mm 19mm}
+@media print{html,body{background:white;font-size:10px;line-height:1.5}.topbar,.foot,.contents,.skip{display:none}.document{padding:0;max-width:none}.label{font-size:8px;margin-bottom:14px}h1{font-size:42px;letter-spacing:-1.8px;margin-bottom:20px}h2{font-size:20px;letter-spacing:-.4px;margin-top:28px;break-after:avoid}h3{font-size:13px;break-after:avoid}h1+h2{font-size:24px}p{margin:10px 0;orphans:3;widows:3}li{margin:5px 0;orphans:3;widows:3}.table-wrap{overflow:visible;border:0;border-radius:0;margin:16px 0}table{font-size:8px;line-height:1.4;min-width:0}td,th{padding:6px 5px}thead{display:table-header-group}tr{break-inside:avoid}code{font-size:8px}a{color:#20342b}.version{font-size:8px;break-inside:avoid}strong{-webkit-print-color-adjust:exact}}
+</style></head>
+<body><a class="skip" href="#main">Skip to content</a><header class="topbar"><a class="brand" href="/" aria-label="Forevane home"><span class="brand-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="18" fill="#192b25"/><g fill="#c4f2d5"><path d="M32 8 39 25 56 32 39 39 32 56 25 39 8 32 25 25Z"/><path d="m48 8 2.5 5.5L56 16l-5.5 2.5L48 24l-2.5-5.5L40 16l5.5-2.5Z"/></g></svg>
+</span>forevane</a><nav class="nav" aria-label="Document navigation"><a class="secondary" href="/#forecasts">Explore</a><a href="/docs/litepaper.html">Manifesto</a><span class="status">TESTNET PILOT</span></nav></header>
+<main id="main" class="document"><div class="label">Your information / Your choices</div><h1 id="privacy-plainly">Privacy, plainly.</h1>
+<p>Forevane testnet pilot · Updated 17 September 2026</p>
+<p><strong>Your forecasts are public. Your wallet secrets stay in your wallet.</strong> This notice explains the information used by the current pilot and the limits of disconnecting from an onchain service.</p>
+<h2 id="1-what-the-current-app-collects">1. What the current app collects</h2>
+<p>The pilot has no email signup, contact form, hosted user account, account database, advertising pixel or analytics integration. It does not request your name, email address, phone number, seed phrase or private key. The application does not set its own tracking cookies or save wallet-session data to browser local storage.</p>
+<p>When you connect, your wallet provides an account address and the selected network. The app asks you to sign a message and verifies that signature in the browser. The address and verification state are held in the page's memory for the current session. This check does not create a server-side account and does not grant Forevane custody of assets.</p>
+<p>Reloading or closing the page clears this in-memory session. “Disconnect this session” clears the app's connection state; it does not necessarily revoke permissions remembered by your wallet extension. You can manage those separately in your wallet's connected-sites settings.</p>
+<h2 id="2-what-goes-onchain">2. What goes onchain</h2>
+<p>When you approve a forecast transaction, the network receives the wallet address, question ID, YES/NO choice, confidence, timestamp and normal transaction data. Anyone can inspect the transaction and contract state. The operator's question creation and outcome resolution are public too.</p>
+<p><strong>Confirmed records cannot be edited or deleted through this contract.</strong> Disconnecting, clearing browser data or asking an operator to remove a profile cannot erase a blockchain transaction. Public wallet activity can be combined with other information to identify a person. Consider using an appropriate wallet for public testnet activity and do not publish sensitive or personal information.</p>
+<p>This pilot runs on a testnet, whose history and availability may change or reset. That possibility is not a privacy deletion mechanism, and nobody should assume that third parties will delete copies of public records.</p>
+<h2 id="3-network-and-service-providers">3. Network and service providers</h2>
+<p>The browser makes blockchain read requests to <code>rpc.testnet.chain.robinhood.com</code>. When reading your record, those requests include the public wallet address and contract query. The RPC operator can receive your IP address and ordinary request metadata. Your wallet may use its own RPC services when you sign or submit a transaction; its provider's practices apply.</p>
+<p>The website serves its fonts with its own static assets. Viewing the delivered site does not require a request to Google Fonts or another external font service. The document pages use your device's system fonts.</p>
+<p>The website's hosting provider may process ordinary access logs, including IP address, browser information, requested path and time, to deliver and secure the site. The local development build does not establish the eventual host's logging or retention settings. A hosted launch must identify its operator, contact route and service providers before adding personal-data collection or commercial accounts.</p>
+<h2 id="4-external-links-and-sharing">4. External links and sharing</h2>
+<p>Links to the block explorer, faucet, wallet download, source data and project documents may take you to other services. Their privacy practices apply when you visit them. A source link is for checking a question's rules; it is not an endorsement of that service.</p>
+<p>The share action copies a question link and public text to your clipboard when you request it. It does not automatically post to X, Telegram, Discord or another account. If you paste the link into another service, that service and its audience may be able to associate the forecast discussion with your identity.</p>
+<h2 id="5-storage-retention-and-your-choices">5. Storage, retention and your choices</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable information table"><table>
+<thead>
+<tr>
+<th>Information</th>
+<th>Where it is handled</th>
+<th>How long / your choice</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wallet address and session verification state</td>
+<td>Current page memory</td>
+<td>Cleared by disconnecting, reloading or closing the page</td>
+</tr>
+<tr>
+<td>Wallet permissions and preferences</td>
+<td>Your wallet provider</td>
+<td>Manage through that wallet's settings</td>
+</tr>
+<tr>
+<td>Forecast and transaction record</td>
+<td>Public testnet and copies held by others</td>
+<td>No deletion or editing function in the pilot contract</td>
+</tr>
+<tr>
+<td>RPC and hosting request metadata</td>
+<td>Respective service providers</td>
+<td>Their retention practices apply; not controlled by this frontend</td>
+</tr>
+<tr>
+<td>Copied share text</td>
+<td>Your device's clipboard</td>
+<td>Managed by your operating system and any destination app</td>
+</tr>
+</tbody>
+</table></div>
+<p>You can browse without connecting a wallet. You can reject a message or transaction request. You can stop before making a public forecast. Forevane has no offchain personal account record to export or delete in this release; your public contract history remains inspectable through the explorer.</p>
+<h2 id="6-security-and-changes">6. Security and changes</h2>
+<p>Never enter a seed phrase or private key into the website or send one in a support message. Forevane's legitimate interaction uses your wallet's normal signature and transaction prompts. Read them before approving. The prototype has not received an independent professional security audit.</p>
+<p>Future community accounts, notifications, billing or analytics would introduce different information flows. They are not active in this release. This notice must be revised before those features collect data, with an identified operator, a working privacy contact, retention rules and any required consent choices. A dedicated privacy contact has not yet been activated for this testnet delivery.</p>
+<p>Forevane is an independent project and is not affiliated with, sponsored by or endorsed by Robinhood.</p>
+<p><a href="/">Return to Forevane</a> · <a href="/docs/litepaper.html">Read the pilot guide</a></p><p class="version">Forevane / Version 0.1 / 17 September 2026. Independent project. Not affiliated with Robinhood.</p></main>
+<footer class="foot"><span>A new direction for your conviction.<br>No monetary stakes. Owner-resolved outcomes.</span><span class="foot-links"><a href="/docs/privacy.html">Privacy</a><a href="/docs/business-plan.pdf">Business plan (PDF)</a><a href="/">Back to Forevane</a></span></footer></body></html>

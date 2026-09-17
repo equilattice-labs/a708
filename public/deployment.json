@@ -1,0 +1,574 @@
+﻿{
+    "abi":  [
+                {
+                    "inputs":  [
+                                   {
+                                       "internalType":  "address",
+                                       "name":  "initialOwner",
+                                       "type":  "address"
+                                   }
+                               ],
+                    "stateMutability":  "nonpayable",
+                    "type":  "constructor"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "AlreadyForecast",
+                    "type":  "error"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "AlreadyResolved",
+                    "type":  "error"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "ForecastLimitReached",
+                    "type":  "error"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "InvalidConfidence",
+                    "type":  "error"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "InvalidDeadline",
+                    "type":  "error"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "InvalidMarket",
+                    "type":  "error"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "InvalidOutcome",
+                    "type":  "error"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "InvalidOwner",
+                    "type":  "error"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "InvalidQuestion",
+                    "type":  "error"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "InvalidSource",
+                    "type":  "error"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "MarketClosed",
+                    "type":  "error"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "ResolutionTooEarly",
+                    "type":  "error"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "Unauthorized",
+                    "type":  "error"
+                },
+                {
+                    "anonymous":  false,
+                    "inputs":  [
+                                   {
+                                       "indexed":  true,
+                                       "internalType":  "uint256",
+                                       "name":  "marketId",
+                                       "type":  "uint256"
+                                   },
+                                   {
+                                       "indexed":  true,
+                                       "internalType":  "address",
+                                       "name":  "forecaster",
+                                       "type":  "address"
+                                   },
+                                   {
+                                       "indexed":  false,
+                                       "internalType":  "bool",
+                                       "name":  "yes",
+                                       "type":  "bool"
+                                   },
+                                   {
+                                       "indexed":  false,
+                                       "internalType":  "uint8",
+                                       "name":  "confidence",
+                                       "type":  "uint8"
+                                   },
+                                   {
+                                       "indexed":  false,
+                                       "internalType":  "uint64",
+                                       "name":  "committedAt",
+                                       "type":  "uint64"
+                                   }
+                               ],
+                    "name":  "ForecastCommitted",
+                    "type":  "event"
+                },
+                {
+                    "anonymous":  false,
+                    "inputs":  [
+                                   {
+                                       "indexed":  true,
+                                       "internalType":  "uint256",
+                                       "name":  "marketId",
+                                       "type":  "uint256"
+                                   },
+                                   {
+                                       "indexed":  false,
+                                       "internalType":  "string",
+                                       "name":  "question",
+                                       "type":  "string"
+                                   },
+                                   {
+                                       "indexed":  false,
+                                       "internalType":  "string",
+                                       "name":  "source",
+                                       "type":  "string"
+                                   },
+                                   {
+                                       "indexed":  false,
+                                       "internalType":  "uint64",
+                                       "name":  "closesAt",
+                                       "type":  "uint64"
+                                   }
+                               ],
+                    "name":  "MarketCreated",
+                    "type":  "event"
+                },
+                {
+                    "anonymous":  false,
+                    "inputs":  [
+                                   {
+                                       "indexed":  true,
+                                       "internalType":  "uint256",
+                                       "name":  "marketId",
+                                       "type":  "uint256"
+                                   },
+                                   {
+                                       "indexed":  false,
+                                       "internalType":  "enum ForecastRegistry.Outcome",
+                                       "name":  "outcome",
+                                       "type":  "uint8"
+                                   },
+                                   {
+                                       "indexed":  false,
+                                       "internalType":  "uint64",
+                                       "name":  "resolvedAt",
+                                       "type":  "uint64"
+                                   }
+                               ],
+                    "name":  "MarketResolved",
+                    "type":  "event"
+                },
+                {
+                    "anonymous":  false,
+                    "inputs":  [
+                                   {
+                                       "indexed":  true,
+                                       "internalType":  "address",
+                                       "name":  "currentOwner",
+                                       "type":  "address"
+                                   },
+                                   {
+                                       "indexed":  true,
+                                       "internalType":  "address",
+                                       "name":  "pendingOwner",
+                                       "type":  "address"
+                                   }
+                               ],
+                    "name":  "OwnershipTransferStarted",
+                    "type":  "event"
+                },
+                {
+                    "anonymous":  false,
+                    "inputs":  [
+                                   {
+                                       "indexed":  true,
+                                       "internalType":  "address",
+                                       "name":  "previousOwner",
+                                       "type":  "address"
+                                   },
+                                   {
+                                       "indexed":  true,
+                                       "internalType":  "address",
+                                       "name":  "newOwner",
+                                       "type":  "address"
+                                   }
+                               ],
+                    "name":  "OwnershipTransferred",
+                    "type":  "event"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "MAX_FORECASTS_PER_WALLET",
+                    "outputs":  [
+                                    {
+                                        "internalType":  "uint256",
+                                        "name":  "",
+                                        "type":  "uint256"
+                                    }
+                                ],
+                    "stateMutability":  "view",
+                    "type":  "function"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "MAX_MARKET_DURATION",
+                    "outputs":  [
+                                    {
+                                        "internalType":  "uint256",
+                                        "name":  "",
+                                        "type":  "uint256"
+                                    }
+                                ],
+                    "stateMutability":  "view",
+                    "type":  "function"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "acceptOwnership",
+                    "outputs":  [
+
+                                ],
+                    "stateMutability":  "nonpayable",
+                    "type":  "function"
+                },
+                {
+                    "inputs":  [
+                                   {
+                                       "internalType":  "uint256",
+                                       "name":  "marketId",
+                                       "type":  "uint256"
+                                   },
+                                   {
+                                       "internalType":  "bool",
+                                       "name":  "yes",
+                                       "type":  "bool"
+                                   },
+                                   {
+                                       "internalType":  "uint8",
+                                       "name":  "confidence",
+                                       "type":  "uint8"
+                                   }
+                               ],
+                    "name":  "commitForecast",
+                    "outputs":  [
+
+                                ],
+                    "stateMutability":  "nonpayable",
+                    "type":  "function"
+                },
+                {
+                    "inputs":  [
+                                   {
+                                       "internalType":  "string",
+                                       "name":  "question",
+                                       "type":  "string"
+                                   },
+                                   {
+                                       "internalType":  "string",
+                                       "name":  "source",
+                                       "type":  "string"
+                                   },
+                                   {
+                                       "internalType":  "uint64",
+                                       "name":  "closesAt",
+                                       "type":  "uint64"
+                                   }
+                               ],
+                    "name":  "createMarket",
+                    "outputs":  [
+                                    {
+                                        "internalType":  "uint256",
+                                        "name":  "marketId",
+                                        "type":  "uint256"
+                                    }
+                                ],
+                    "stateMutability":  "nonpayable",
+                    "type":  "function"
+                },
+                {
+                    "inputs":  [
+                                   {
+                                       "internalType":  "uint256",
+                                       "name":  "marketId",
+                                       "type":  "uint256"
+                                   },
+                                   {
+                                       "internalType":  "address",
+                                       "name":  "forecaster",
+                                       "type":  "address"
+                                   }
+                               ],
+                    "name":  "getForecast",
+                    "outputs":  [
+                                    {
+                                        "components":  [
+                                                           {
+                                                               "internalType":  "bool",
+                                                               "name":  "exists",
+                                                               "type":  "bool"
+                                                           },
+                                                           {
+                                                               "internalType":  "bool",
+                                                               "name":  "yes",
+                                                               "type":  "bool"
+                                                           },
+                                                           {
+                                                               "internalType":  "uint8",
+                                                               "name":  "confidence",
+                                                               "type":  "uint8"
+                                                           },
+                                                           {
+                                                               "internalType":  "uint64",
+                                                               "name":  "committedAt",
+                                                               "type":  "uint64"
+                                                           }
+                                                       ],
+                                        "internalType":  "struct ForecastRegistry.Forecast",
+                                        "name":  "",
+                                        "type":  "tuple"
+                                    }
+                                ],
+                    "stateMutability":  "view",
+                    "type":  "function"
+                },
+                {
+                    "inputs":  [
+                                   {
+                                       "internalType":  "address",
+                                       "name":  "forecaster",
+                                       "type":  "address"
+                                   }
+                               ],
+                    "name":  "getForecastMarketIds",
+                    "outputs":  [
+                                    {
+                                        "internalType":  "uint256[]",
+                                        "name":  "",
+                                        "type":  "uint256[]"
+                                    }
+                                ],
+                    "stateMutability":  "view",
+                    "type":  "function"
+                },
+                {
+                    "inputs":  [
+                                   {
+                                       "internalType":  "uint256",
+                                       "name":  "marketId",
+                                       "type":  "uint256"
+                                   }
+                               ],
+                    "name":  "getMarket",
+                    "outputs":  [
+                                    {
+                                        "components":  [
+                                                           {
+                                                               "internalType":  "string",
+                                                               "name":  "question",
+                                                               "type":  "string"
+                                                           },
+                                                           {
+                                                               "internalType":  "string",
+                                                               "name":  "source",
+                                                               "type":  "string"
+                                                           },
+                                                           {
+                                                               "internalType":  "uint64",
+                                                               "name":  "closesAt",
+                                                               "type":  "uint64"
+                                                           },
+                                                           {
+                                                               "internalType":  "uint64",
+                                                               "name":  "createdAt",
+                                                               "type":  "uint64"
+                                                           },
+                                                           {
+                                                               "internalType":  "uint64",
+                                                               "name":  "resolvedAt",
+                                                               "type":  "uint64"
+                                                           },
+                                                           {
+                                                               "internalType":  "enum ForecastRegistry.Outcome",
+                                                               "name":  "outcome",
+                                                               "type":  "uint8"
+                                                           },
+                                                           {
+                                                               "internalType":  "uint32",
+                                                               "name":  "yesCount",
+                                                               "type":  "uint32"
+                                                           },
+                                                           {
+                                                               "internalType":  "uint32",
+                                                               "name":  "noCount",
+                                                               "type":  "uint32"
+                                                           }
+                                                       ],
+                                        "internalType":  "struct ForecastRegistry.Market",
+                                        "name":  "",
+                                        "type":  "tuple"
+                                    }
+                                ],
+                    "stateMutability":  "view",
+                    "type":  "function"
+                },
+                {
+                    "inputs":  [
+                                   {
+                                       "internalType":  "address",
+                                       "name":  "forecaster",
+                                       "type":  "address"
+                                   }
+                               ],
+                    "name":  "getTrackRecord",
+                    "outputs":  [
+                                    {
+                                        "internalType":  "uint256",
+                                        "name":  "resolved",
+                                        "type":  "uint256"
+                                    },
+                                    {
+                                        "internalType":  "uint256",
+                                        "name":  "correct",
+                                        "type":  "uint256"
+                                    },
+                                    {
+                                        "internalType":  "uint256",
+                                        "name":  "cancelled",
+                                        "type":  "uint256"
+                                    },
+                                    {
+                                        "internalType":  "uint256",
+                                        "name":  "totalForecasts",
+                                        "type":  "uint256"
+                                    }
+                                ],
+                    "stateMutability":  "view",
+                    "type":  "function"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "marketCount",
+                    "outputs":  [
+                                    {
+                                        "internalType":  "uint256",
+                                        "name":  "",
+                                        "type":  "uint256"
+                                    }
+                                ],
+                    "stateMutability":  "view",
+                    "type":  "function"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "owner",
+                    "outputs":  [
+                                    {
+                                        "internalType":  "address",
+                                        "name":  "",
+                                        "type":  "address"
+                                    }
+                                ],
+                    "stateMutability":  "view",
+                    "type":  "function"
+                },
+                {
+                    "inputs":  [
+
+                               ],
+                    "name":  "pendingOwner",
+                    "outputs":  [
+                                    {
+                                        "internalType":  "address",
+                                        "name":  "",
+                                        "type":  "address"
+                                    }
+                                ],
+                    "stateMutability":  "view",
+                    "type":  "function"
+                },
+                {
+                    "inputs":  [
+                                   {
+                                       "internalType":  "uint256",
+                                       "name":  "marketId",
+                                       "type":  "uint256"
+                                   },
+                                   {
+                                       "internalType":  "enum ForecastRegistry.Outcome",
+                                       "name":  "outcome",
+                                       "type":  "uint8"
+                                   }
+                               ],
+                    "name":  "resolveMarket",
+                    "outputs":  [
+
+                                ],
+                    "stateMutability":  "nonpayable",
+                    "type":  "function"
+                },
+                {
+                    "inputs":  [
+                                   {
+                                       "internalType":  "address",
+                                       "name":  "newOwner",
+                                       "type":  "address"
+                                   }
+                               ],
+                    "name":  "transferOwnership",
+                    "outputs":  [
+
+                                ],
+                    "stateMutability":  "nonpayable",
+                    "type":  "function"
+                }
+            ],
+    "address":  "0x7fC25ad231E7a3c21B44DdE766F77c43C6F9B66E",
+    "chainId":  46630
+}

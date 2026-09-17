@@ -1,0 +1,988 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#edf4ec"><meta name="description" content="Business and operating plan. Forevane is an independent no-stakes forecasting pilot on Robinhood Chain testnet."><title>Business and operating plan | Forevane</title><style>
+:root{color-scheme:light;--ink:#20342b;--muted:#607266;--mint:#d5f3df;--line:#d8e3d9;--paper:#f8faf7}
+*{box-sizing:border-box}html{background:var(--paper);scroll-behavior:smooth;scroll-padding-top:28px}
+body{margin:0;color:var(--ink);font:16px/1.75 Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-underline-offset:4px;text-decoration-thickness:1px}a:hover{color:#29683f}
+a:focus-visible,summary:focus-visible,.table-wrap:focus-visible{outline:3px solid #367346;outline-offset:5px}
+.skip{position:absolute;top:-60px;left:20px;background:var(--ink);color:white;padding:10px 16px;z-index:5}.skip:focus{top:12px}
+.topbar{max-width:1200px;margin:auto;padding:27px 40px;display:flex;gap:20px;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.brand{font-size:27px;letter-spacing:-1.2px;font-weight:800;text-decoration:none;display:flex;align-items:center;gap:11px}.brand-icon{width:29px;height:29px;display:block}.brand-icon svg{width:100%;height:100%;display:block}
+.nav{display:flex;gap:23px;align-items:center;font-size:12px}.nav a{text-decoration:none}.status{font-size:10px;letter-spacing:1.2px;background:var(--mint);padding:7px 10px;white-space:nowrap}
+.document{max-width:1000px;margin:0 auto;padding:67px 56px 76px}.label{text-transform:uppercase;letter-spacing:2px;font-size:11px;margin-bottom:26px;color:var(--muted)}
+h1,h2,h3{line-height:1.16;font-weight:600}h1{font-size:clamp(43px,5.6vw,70px);letter-spacing:-3px;max-width:850px;margin:0 0 28px}h2{font-size:30px;letter-spacing:-1px;margin:53px 0 21px;scroll-margin-top:25px}h3{font-size:20px;letter-spacing:-.35px;margin:32px 0 12px}
+h1+h2{font-size:36px;margin:0 0 26px;font-weight:400}p{margin:16px 0}strong{font-weight:700}ul,ol{padding-left:24px;margin:20px 0}li{padding-left:4px;margin:10px 0}blockquote{border-left:3px solid #559a6a;margin:25px 0;padding:4px 22px;background:#edf5ed}
+.table-wrap{width:100%;overflow-x:auto;margin:24px 0;border:1px solid var(--line);border-radius:8px}table{border-collapse:collapse;width:100%;font-size:13px;line-height:1.55}th{text-align:left;font-weight:700;background:#e8f1e7}td,th{vertical-align:top;padding:13px 14px;border-bottom:1px solid var(--line)}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#f1f5ef}
+code{font:12px/1.5 Consolas,monospace;background:#e8f0e7;padding:3px 5px;overflow-wrap:anywhere}pre{white-space:pre-wrap;overflow-wrap:anywhere}pre code{display:block;padding:16px}
+.contents{margin:32px 0 42px;padding:16px 20px;border:1px solid var(--line);border-radius:8px;font-size:13px;background:#f0f6ee}.contents summary{cursor:pointer;font-weight:700}.contents ul{margin:14px 0 0;list-style:none;padding:0}.contents li{margin:6px 0}.contents li li{margin-left:16px}.contents a{text-decoration:none}
+.foot{max-width:1120px;margin:0 auto;padding:29px 40px 38px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:24px;font-size:11px;color:var(--muted)}.foot a{white-space:nowrap}.foot-links{display:flex;gap:18px}.version{font-size:11px;color:var(--muted);border-top:1px solid var(--line);padding-top:25px;margin-top:46px}
+@media(max-width:650px){body{font-size:15px}.topbar{padding:20px 22px}.brand{font-size:24px}.nav{gap:13px}.nav .secondary{display:none}.status{font-size:8px}.document{padding:43px 24px 55px}h1{letter-spacing:-2px}h2{font-size:26px;margin-top:41px}h1+h2{font-size:29px}table{font-size:12px;min-width:480px}.foot{padding:23px 24px;display:block}.foot-links{margin-top:14px}.label{font-size:10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@page{size:A4;margin:18mm 15mm 19mm}
+@media print{html,body{background:white;font-size:10px;line-height:1.5}.topbar,.foot,.contents,.skip{display:none}.document{padding:0;max-width:none}.label{font-size:8px;margin-bottom:14px}h1{font-size:42px;letter-spacing:-1.8px;margin-bottom:20px}h2{font-size:20px;letter-spacing:-.4px;margin-top:28px;break-after:avoid}h3{font-size:13px;break-after:avoid}h1+h2{font-size:24px}p{margin:10px 0;orphans:3;widows:3}li{margin:5px 0;orphans:3;widows:3}.table-wrap{overflow:visible;border:0;border-radius:0;margin:16px 0}table{font-size:8px;line-height:1.4;min-width:0}td,th{padding:6px 5px}thead{display:table-header-group}tr{break-inside:avoid}code{font-size:8px}a{color:#20342b}.version{font-size:8px;break-inside:avoid}strong{-webkit-print-color-adjust:exact}}
+</style></head>
+<body><a class="skip" href="#main">Skip to content</a><header class="topbar"><a class="brand" href="/" aria-label="Forevane home"><span class="brand-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="18" fill="#192b25"/><g fill="#c4f2d5"><path d="M32 8 39 25 56 32 39 39 32 56 25 39 8 32 25 25Z"/><path d="m48 8 2.5 5.5L56 16l-5.5 2.5L48 24l-2.5-5.5L40 16l5.5-2.5Z"/></g></svg>
+</span>forevane</a><nav class="nav" aria-label="Document navigation"><a class="secondary" href="/#forecasts">Explore</a><a href="/docs/litepaper.html">Manifesto</a><span class="status">TESTNET PILOT</span></nav></header>
+<main id="main" class="document"><div class="label">Founder operating document</div><h1 id="forevane">Forevane</h1>
+<h2 id="your-next-take-on-the-record">Your next take. On the record.</h2>
+<p>Business and operating plan · 17 September 2026 · USD unless stated otherwise</p>
+<p><strong>Forevane is a social forecasting record for communities, built initially on Robinhood Chain testnet.</strong> A member chooses a YES/NO view, records confidence before a deadline, and returns to a transparent outcome. The product turns fleeting market conversation into an inspectable history. Its ambition is to become the portable record of judgment used across online finance communities, research groups, and forecasting applications.</p>
+<p>The commercial starting point is community software: structured questions, recurring forecasting rounds, recaps, and useful records. It is not a brokerage, an investment adviser, a real-money prediction market, or a promise of returns. No token sale or liquidity incentive is required for the base business.</p>
+<p>This document is a plan, not evidence of traction. Pricing, costs, conversion, retention, fundraising, and revenue below are explicit management assumptions to validate. The present delivery is a testnet prototype and launch materials; paid subscriptions, community integrations, API sales, automatic resolution, and production operations are future work. The deployment record and repository documentation govern what has actually been implemented.</p>
+<details class="contents"><summary>Contents</summary><div class="toc">
+<ul>
+<li><a href="#forevane">Forevane</a><ul>
+<li><a href="#your-next-take-on-the-record">Your next take. On the record.</a></li>
+<li><a href="#1-identity-and-the-investment-thesis">1. Identity and the investment thesis</a></li>
+<li><a href="#2-customer-problem-and-initial-customer-profile">2. Customer problem and initial customer profile</a><ul>
+<li><a href="#the-buyer">The buyer</a></li>
+<li><a href="#the-participant">The participant</a></li>
+<li><a href="#three-jobs-to-validate">Three jobs to validate</a></li>
+</ul>
+</li>
+<li><a href="#3-product-and-the-complete-operating-loop">3. Product and the complete operating loop</a><ul>
+<li><a href="#user-loop">User loop</a></li>
+<li><a href="#buyer-and-revenue-loop">Buyer and revenue loop</a></li>
+<li><a href="#resolution-loop-and-accountability">Resolution loop and accountability</a></li>
+</ul>
+</li>
+<li><a href="#4-scope-delivered-prototype-and-staged-products">4. Scope: delivered prototype and staged products</a></li>
+<li><a href="#5-market-assessment-and-competitive-position">5. Market assessment and competitive position</a><ul>
+<li><a href="#bottom-up-planning-envelope-not-a-verified-tam">Bottom-up planning envelope, not a verified TAM</a></li>
+<li><a href="#defensibility-to-earn">Defensibility to earn</a></li>
+</ul>
+</li>
+<li><a href="#6-pricing-and-revenue-design">6. Pricing and revenue design</a></li>
+<li><a href="#7-unit-economics-and-acquisition-discipline">7. Unit economics and acquisition discipline</a></li>
+<li><a href="#8-go-to-market-and-acquisition-funnel">8. Go-to-market and acquisition funnel</a><ul>
+<li><a href="#beachhead-run-the-communitys-weekly-forecast-round">Beachhead: run the community's weekly forecast round</a></li>
+<li><a href="#first-90-day-funnel-targets">First 90-day funnel targets</a></li>
+<li><a href="#sales-funnel-needed-for-the-year-one-target">Sales funnel needed for the year-one target</a></li>
+</ul>
+</li>
+<li><a href="#9-twelve-month-financial-model">9. Twelve-month financial model</a><ul>
+<li><a href="#funding-and-cost-assumptions">Funding and cost assumptions</a></li>
+<li><a href="#base-case-monthly-schedule">Base-case monthly schedule</a></li>
+<li><a href="#scenario-discipline">Scenario discipline</a></li>
+</ul>
+</li>
+<li><a href="#10-concrete-90-day-execution-plan">10. Concrete 90-day execution plan</a><ul>
+<li><a href="#decision-gates">Decision gates</a></li>
+</ul>
+</li>
+<li><a href="#11-metrics-scoring-and-data-integrity">11. Metrics, scoring and data integrity</a></li>
+<li><a href="#12-technical-and-operating-model">12. Technical and operating model</a><ul>
+<li><a href="#prototype-architecture">Prototype architecture</a></li>
+<li><a href="#commercial-architecture-to-build">Commercial architecture to build</a></li>
+<li><a href="#operating-roles">Operating roles</a></li>
+</ul>
+</li>
+<li><a href="#13-risks-and-mitigations">13. Risks and mitigations</a></li>
+<li><a href="#14-twelve-month-roadmap-and-long-term-option">14. Twelve-month roadmap and long-term option</a></li>
+<li><a href="#15-launch-completion-checklist">15. Launch completion checklist</a></li>
+<li><a href="#sources-and-evidence-boundaries">Sources and evidence boundaries</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</details><h2 id="1-identity-and-the-investment-thesis">1. Identity and the investment thesis</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable information table"><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td><strong>Forevane</strong> — “forecast” + “vane”; pronounced FOR-vayn</td>
+</tr>
+<tr>
+<td>Proposed domain</td>
+<td><strong>forevane.xyz</strong></td>
+</tr>
+<tr>
+<td>Proposed X identity</td>
+<td><strong>@forevane</strong></td>
+</tr>
+<tr>
+<td>Main line</td>
+<td><strong>Your next take. On the record.</strong></td>
+</tr>
+<tr>
+<td>One-sentence pitch</td>
+<td>Forevane helps communities turn market opinions into transparent forecast records on Robinhood Chain.</td>
+</tr>
+<tr>
+<td>First audience</td>
+<td>English-speaking market communities and their moderators</td>
+</tr>
+<tr>
+<td>First product</td>
+<td>No-stakes, wallet-recorded forecasts on Robinhood Chain testnet</td>
+</tr>
+<tr>
+<td>Business model</td>
+<td>Community SaaS; optional personal analytics; later contracted API access</td>
+</tr>
+</tbody>
+</table></div>
+<p>Naming checks in this delivery found no registry object for the proposed <code>.xyz</code>, no public X profile at the exact handle, and no exact project-name match in the checked GitHub, CoinGecko, and DefiLlama datasets. These checks do not reserve either identity, guarantee that X will allow registration, or establish trademark clearance. Claim the exact identities promptly through the owner's registrar and X account flow before a public launch.</p>
+<p><strong>Why this could become a substantial business:</strong> finance discussion is abundant, but an opinion's original timing, confidence, and eventual result are hard to compare. A shared format for questions and records can become useful infrastructure for communities. Communities provide repeat participation; repeat participation provides a longitudinal dataset; better recaps and analysis can justify subscriptions; portable records create reasons for users and partners to keep using the format. Each step must be proven. A smart contract by itself provides no defensibility.</p>
+<h2 id="2-customer-problem-and-initial-customer-profile">2. Customer problem and initial customer profile</h2>
+<h3 id="the-buyer">The buyer</h3>
+<p>The first buyer is the owner or moderator of an English-speaking Telegram, Discord, or X-centered market community. The initial prospect criteria are 500–20,000 members, a weekly market discussion, at least two active moderators, and an existing willingness to pay for community software, research tools, or events. Membership size is a prospect filter, not a forecast of active users.</p>
+<p>The buyer wants a recurring reason for members to participate, a credible way to recap views, and less manual work compiling screenshots and poll results. Their alternatives are free polls, spreadsheets, Discord bots, prediction-market leaderboards, and doing nothing. Forevane must save time or improve engagement enough to beat those low-cost alternatives.</p>
+<h3 id="the-participant">The participant</h3>
+<p>The first participant already reads market commentary and can use an EVM wallet. They want to put a view on record, see how confidence changes across outcomes, and find people whose reasoning is worth reading. The product must not imply that a short winning streak qualifies someone to provide investment advice or that a wallet represents a unique individual.</p>
+<h3 id="three-jobs-to-validate">Three jobs to validate</h3>
+<ol>
+<li>“When our group debates this week's market events, let me publish one precise question and get useful responses without running a trading operation.”</li>
+<li>“When I say I expected an outcome, let me link the original forecast and its rules instead of a selected screenshot.”</li>
+<li>“When we look back, show every resolved call—including wrong ones—and explain how the outcome was decided.”</li>
+</ol>
+<p>The first 30 buyer interviews should test current workflow, hours spent per week, present software spend, desire for onchain proof, wallet friction, acceptable price, and willingness to run a real two-week pilot. Ask about past behavior before showing the product. An enthusiastic reaction without a pilot commitment is not validation.</p>
+<h2 id="3-product-and-the-complete-operating-loop">3. Product and the complete operating loop</h2>
+<h3 id="user-loop">User loop</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable information table"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>User action</th>
+<th>Product responsibility</th>
+<th>Measurable result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Discover</td>
+<td>Opens a shared question or browses the call board</td>
+<td>Show deadline, instrument, rules, source, and testnet label without requiring connection</td>
+<td>Qualified question view</td>
+</tr>
+<tr>
+<td>Understand</td>
+<td>Reviews settlement definition and source</td>
+<td>Explain YES/NO, confidence, immutable deadline, owner resolution, and cancellation</td>
+<td>Rules opened; comprehension in interviews</td>
+</tr>
+<tr>
+<td>Commit</td>
+<td>Connects wallet, chooses side/confidence, approves a testnet transaction</td>
+<td>Validate network and deadline; wait for receipt; show transaction link</td>
+<td>Successful unique wallet/question record</td>
+</tr>
+<tr>
+<td>Discuss</td>
+<td>Shares a question or transaction link</td>
+<td>Preserve original question, status, and transparent context</td>
+<td>Attributable returning participant</td>
+</tr>
+<tr>
+<td>Resolve</td>
+<td>Returns after the observation period</td>
+<td>Operator publishes the outcome according to the predeclared source; cancellation where required</td>
+<td>Timely outcome with evidence</td>
+</tr>
+<tr>
+<td>Learn</td>
+<td>Reviews outcomes and history</td>
+<td>Show successes, errors, sample size, and unresolved/cancelled calls</td>
+<td>Second-week participation and useful recap</td>
+</tr>
+<tr>
+<td>Repeat</td>
+<td>Participates in the next round</td>
+<td>Community ritual and opt-in notification, later integration</td>
+<td>Four-week retained contributor</td>
+</tr>
+</tbody>
+</table></div>
+<p>The chain stores the record and its state transitions. It does not establish that the resolution source is correct, that the operator is unbiased, that an account is one human, or that confidence is a market price.</p>
+<h3 id="buyer-and-revenue-loop">Buyer and revenue loop</h3>
+<p>Founder recruits a qualified moderator → moderator chooses a recurring event → Forevane helps write three unambiguous questions → members try a no-stakes round → moderator receives an outcome recap → second round validates recurrence → buyer chooses a paid community workspace → subscription pays for infrastructure, support, and question quality → retained community supplies referrals and product feedback.</p>
+<p>Do not pay people to forecast at launch. Paying for activity can hide weak demand and create low-quality or Sybil records. A free pilot can waive a software fee; it should not promise future tokens, financial rewards, or privileged investment access.</p>
+<h3 id="resolution-loop-and-accountability">Resolution loop and accountability</h3>
+<p>Before a question opens, set the question text, exact observation condition, UTC deadline, source URL, resolution window, and cancellation criteria. The initial resolver is the deployment owner. Disclose this authority in the interface and documentation.</p>
+<p>For each operating round, the operator retains a dated source excerpt, checks the predefined condition, records YES/NO or cancellation, and publishes an explanation. A missing source, contradictory source, suspended instrument, or ambiguous condition should trigger the stated cancellation policy rather than an improvised result. Cancelled questions remain visible and are excluded from accuracy/calibration calculations.</p>
+<p>The prototype's contract restrictions determine which rules are technically enforced; an offchain explanation or service-level promise is not a smart-contract guarantee. Production work must add a durable evidence URI/hash, clear review/dispute policy, multisignature administration, and an independent resolution review path. Automated oracles are a later product decision, subject to feed semantics and availability. Never describe owner-resolved outcomes as trustless settlement.</p>
+<h2 id="4-scope-delivered-prototype-and-staged-products">4. Scope: delivered prototype and staged products</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable information table"><table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Initial delivery / intended acceptance</th>
+<th>Commercial beta to build</th>
+<th>Later only if justified</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Website</td>
+<td>English Vue application, original visual identity, responsive call interface</td>
+<td>Structured onboarding, performance monitoring, browser regression checks</td>
+<td>Personalized discovery</td>
+</tr>
+<tr>
+<td>Wallet</td>
+<td>EVM wallet connection and testnet network flow</td>
+<td>Wallet-verified web sessions, account recovery UX where applicable</td>
+<td>ERC-4337 gas sponsorship with spending limits</td>
+</tr>
+<tr>
+<td>Forecasts</td>
+<td>Fixed questions; YES/NO and confidence; transaction-backed record; no stakes</td>
+<td>Moderated creation, richer question templates, indexed history</td>
+<td>Cross-community attestations</td>
+</tr>
+<tr>
+<td>Resolution</td>
+<td>Explicit owner resolution and cancellation</td>
+<td>Evidence archive, second-person review, published dispute response</td>
+<td>Source-specific oracle adapters</td>
+</tr>
+<tr>
+<td>History</td>
+<td>Read existing wallet/contract records where implemented</td>
+<td>Complete indexing, export, cohort analytics, calibration</td>
+<td>Contracted API and embedded profiles</td>
+</tr>
+<tr>
+<td>Communities</td>
+<td>Positioning, sharing links, pilot playbook</td>
+<td>Telegram/Discord integrations, workspace roles, scheduled recaps</td>
+<td>Partner SDK and white-label embed</td>
+</tr>
+<tr>
+<td>Payments</td>
+<td>None in the prototype</td>
+<td>Standard subscription billing, cancellation, tax handling</td>
+<td>Contracted enterprise invoicing</td>
+</tr>
+<tr>
+<td>Financial execution</td>
+<td>None</td>
+<td>None in the base plan</td>
+<td>Separate licensed/compliant integration assessment</td>
+</tr>
+</tbody>
+</table></div>
+<p>The testnet proof must be demonstrable end to end: inspect a question → connect the correct network → submit a forecast → obtain a successful transaction receipt → retrieve the record → resolve a matured question or exercise cancellation in a test → inspect resulting state. A rendered example card alone is not evidence that this loop works.</p>
+<h2 id="5-market-assessment-and-competitive-position">5. Market assessment and competitive position</h2>
+<p><a href="https://outrive.xyz/">Outrive</a> demonstrates a social loop around Telegram calls and Hyperliquid execution. Its documentation ties calls to orders and charges fees on positions sold or closed. Forevane uses a different initial value proposition: transparent learning and community workflow without a deposit or trade. The comparison is about product mechanics, not proof that either product has a particular customer count.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable information table"><table>
+<thead>
+<tr>
+<th>Alternative</th>
+<th>Strength</th>
+<th>Forevane's proposed differentiation</th>
+<th>Main weakness to overcome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Telegram/Discord polls and spreadsheets</td>
+<td>Familiar, free, low friction</td>
+<td>Persistent wallet-recorded forecasts; rule and deadline consistency; outcomes in one format</td>
+<td>Wallet and transaction friction may outweigh the benefit</td>
+</tr>
+<tr>
+<td>Outrive and social execution products</td>
+<td>Conversation becomes an actionable position</td>
+<td>No-stakes record and community workflow; no exchange dependency for core use</td>
+<td>Less immediate excitement and no trade-fee revenue</td>
+</tr>
+<tr>
+<td>Real-money prediction platforms</td>
+<td>Prices, liquidity, financial incentives</td>
+<td>Lightweight community-owned ritual and confidence history</td>
+<td>Fewer financial incentives to participate</td>
+</tr>
+<tr>
+<td>Forecasting communities and research platforms</td>
+<td>Established methods and serious analysis</td>
+<td>Portable onchain record and community embed</td>
+<td>Forecast quality must compete with mature offchain alternatives</td>
+</tr>
+<tr>
+<td>Generic onchain reputation tools</td>
+<td>Attestations and composability</td>
+<td>A narrow opinion-to-outcome data model and operator workflow</td>
+<td>Incumbents can add forecast schemas</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="bottom-up-planning-envelope-not-a-verified-tam">Bottom-up planning envelope, not a verified TAM</h3>
+<p>There is no externally validated market-size claim in this plan. Build a prospect list first. The initial planning universe is <strong>5,000 potentially relevant English-speaking communities</strong>, of which <strong>1,000 may qualify</strong> under the buyer criteria. Both numbers are assumptions. Reaching 100 paying communities would require 10% of that qualified universe, which is demanding for a new vendor and should not be treated as inevitable.</p>
+<p>At 100 communities × $199/month, community ARR would be $238,800. With 700 individual Pro subscriptions × $19/month and 10 API clients × $499/month, combined month-12 annualized recurring revenue would be $458,280. This is an operating target, not market size, contracted revenue, or first-year revenue. Year-one recognized subscription revenue in the base model is only $142,975 because customers ramp throughout the year.</p>
+<p>The broader expansion opportunity is communities outside crypto-native trading: macro discussion, financial education, research teams, and other objectively resolvable forecasting use cases. Enter a new segment only when its resolution methodology, incentives, privacy requirements, and willingness to pay are understood.</p>
+<h3 id="defensibility-to-earn">Defensibility to earn</h3>
+<ul>
+<li><strong>Distribution:</strong> repeat relationships with community operators and a useful weekly ritual.</li>
+<li><strong>Data quality:</strong> consistent question definitions, visible cancellations, all-call history, and explicit source semantics.</li>
+<li><strong>Trust:</strong> published resolution operations, transparent administration, and no selective deletion of poor outcomes.</li>
+<li><strong>Portability:</strong> user-owned links/exports and open schemas make the record useful outside the homepage.</li>
+<li><strong>Workflow:</strong> moderation, recaps, integrations, and support can be harder to replace than a simple contract.</li>
+</ul>
+<p>Neither a new token nor a chain-specific brand is required. If users do not value onchain permanence, preserve the useful workflow and reconsider how prominently the chain appears in onboarding.</p>
+<h2 id="6-pricing-and-revenue-design">6. Pricing and revenue design</h2>
+<p>Proposed monthly prices, billed in fiat through a conventional subscription provider during commercial beta. These are experiments, not live offers.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable information table"><table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Planned price</th>
+<th>Buyer and value</th>
+<th>Launch gate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Open</td>
+<td>Free</td>
+<td>Browse public questions, submit within fair-use limits, inspect own public record</td>
+<td>Core testnet loop works</td>
+</tr>
+<tr>
+<td>Pro</td>
+<td>$19/month</td>
+<td>Individual exports, confidence/calibration views, saved research workflow, later notifications</td>
+<td>At least 50 recurring users request these features; first 10 pay</td>
+</tr>
+<tr>
+<td>Community</td>
+<td>$199/month</td>
+<td>Moderator workspace, up to 500 monthly active contributors, round templates, automated recaps, exports, support</td>
+<td>Five pilot communities repeat; three commit to paying</td>
+</tr>
+<tr>
+<td>API</td>
+<td>From $499/month</td>
+<td>Contracted read API, permitted commercial reuse, documented quotas and support</td>
+<td>Stable indexed dataset; two paid design partners; privacy/licensing review</td>
+</tr>
+</tbody>
+</table></div>
+<p>Usage above the Community fair-use band and API quotas needs a disclosed paid plan or negotiated contract. Public onchain records remain public regardless of plan. Premium users cannot pay to remove poor calls, influence resolution, or buy ranking. Avoid selling raw individual behavior or personal contact data. If sponsorship is tested later, label it clearly and keep it separate from question outcomes and rankings.</p>
+<p>No revenue is assumed from gas, trading spread, asset custody, financial prizes, token appreciation, referral trading fees, or the sale of a proprietary token. The initial project has no native token.</p>
+<h2 id="7-unit-economics-and-acquisition-discipline">7. Unit economics and acquisition discipline</h2>
+<p>All values below are hypotheses. Contribution margin assumes 10% variable costs; actual small-account support and gas costs could be higher. The baseline allocates variable revenue cost as 3% payment processing, 5% usage-based infrastructure/notifications, and 2% gas sponsorship/support overage. Fixed infrastructure and staff are separately included in operating cost. Validate with vendor quotes and observed usage before enabling sponsored gas.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable information table"><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Community</th>
+<th>Individual Pro</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Monthly revenue per paid account</td>
+<td>$199</td>
+<td>$19</td>
+</tr>
+<tr>
+<td>Monthly contribution at 90%</td>
+<td>$179.10</td>
+<td>$17.10</td>
+</tr>
+<tr>
+<td>Illustrative fully loaded acquisition cost</td>
+<td>$600</td>
+<td>$45</td>
+</tr>
+<tr>
+<td>Contribution payback</td>
+<td>3.35 months</td>
+<td>2.63 months</td>
+</tr>
+<tr>
+<td>Assumed monthly logo churn</td>
+<td>4%</td>
+<td>8%</td>
+</tr>
+<tr>
+<td>Simple steady-state contribution LTV</td>
+<td>$4,477.50</td>
+<td>$213.75</td>
+</tr>
+<tr>
+<td>Illustrative LTV/CAC</td>
+<td>7.46×</td>
+<td>4.75×</td>
+</tr>
+</tbody>
+</table></div>
+<p>LTV here is <code>monthly contribution ÷ monthly churn</code>; it assumes stable churn and excludes discounting, expansion and cohort changes. It must not be used as a fundraising fact before sufficient cohorts mature. A three-month pilot cannot establish a multi-year lifetime. Report three- and six-month realized contribution alongside any modeled LTV.</p>
+<p><strong>Stress test:</strong> at 8% Community churn and $1,200 CAC, modeled LTV falls to $2,238.75, the ratio becomes 1.87×, and payback becomes 6.70 months. That would require fixing retention and acquisition before scaling. At 75% contribution margin, a $199 Community plan contributes $149.25/month and takes 4.02 months to recover $600 CAC.</p>
+<p>Fully loaded CAC includes attributed paid spend, founder/community sales time, partner commissions and onboarding labor. Do not report only advertising spend. Reconcile gross community additions with churn; month-end account counts in the financial model are net of losses and require more gross sales. At a starting base of 85 communities, 4% monthly churn means roughly 3–4 replacements before growing to 100.</p>
+<h2 id="8-go-to-market-and-acquisition-funnel">8. Go-to-market and acquisition funnel</h2>
+<h3 id="beachhead-run-the-communitys-weekly-forecast-round">Beachhead: run the community's weekly forecast round</h3>
+<p>Start with one repeatable format: three questions, one seven-day observation window, one published recap. Use liquid, well-documented market reference data and precise time definitions; limit initial questions to those the operator can resolve reliably. Allow contrarian views and make confidence optional only if the scoring model can handle missing values. A forecast is neither an investment instruction nor a performance guarantee.</p>
+<p>Founder-led outreach should target a researched list, use individualized messages, and offer a concrete two-round pilot. The delivery package should include a moderation guide, resolution example, 15-minute setup, a testnet wallet guide, and an end-of-round report. Outbound messages and public posts require the project owner's authorized account and must not imply existing partnerships.</p>
+<h3 id="first-90-day-funnel-targets">First 90-day funnel targets</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable information table"><table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Target</th>
+<th>Measurement and decision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qualified prospects identified</td>
+<td>120</td>
+<td>Meet buyer criteria; owner/contact source recorded lawfully</td>
+</tr>
+<tr>
+<td>Discovery interviews completed</td>
+<td>30</td>
+<td>At least 15 describe an existing recurring pain without prompting</td>
+</tr>
+<tr>
+<td>Two-week pilots agreed</td>
+<td>10</td>
+<td>Named owner, fixed dates, questions, and success metric</td>
+</tr>
+<tr>
+<td>Pilots that actually run</td>
+<td>8</td>
+<td>At least one complete resolved round</td>
+</tr>
+<tr>
+<td>Repeat communities</td>
+<td>5</td>
+<td>Run a second round without a cash participation incentive</td>
+</tr>
+<tr>
+<td>Paying commitments</td>
+<td>3</td>
+<td>Signed order or collected subscription; stated intent alone excluded</td>
+</tr>
+<tr>
+<td>Activated pilot contributors</td>
+<td>150</td>
+<td>First successful forecast and outcome revisit, deduplicated by wallet</td>
+</tr>
+<tr>
+<td>Week-four retained contributors</td>
+<td>≥25% of eligible cohort</td>
+<td>Record in week four after first activation; report denominator</td>
+</tr>
+</tbody>
+</table></div>
+<p>Targets are intentionally specific and falsifiable. They are not current results. Do not buy broad consumer traffic until at least five communities repeat. Community co-marketing and moderator referrals come first. Content should show the product's method: how to write a resolvable question, why confidence differs from certainty, and what an honest recap includes. The three prepared X posts introduce the thesis, the record loop, and the community vision; they should link to the working prototype once hosted.</p>
+<h3 id="sales-funnel-needed-for-the-year-one-target">Sales funnel needed for the year-one target</h3>
+<p>The 100 net Community accounts at month 12 likely require approximately 110–125 gross wins under phased acquisition and churn. At an assumed 25% qualified-demo-to-paid rate, that means roughly 440–500 qualified demos over the year, concentrated after beta. This is a substantial workload for a founder plus one community lead. If month-six pilot-to-paid conversion is below 20%, reduce the account forecast instead of disguising the gap with paid signups.</p>
+<p>Pro acquisition is expected primarily from active community participants, not independent paid ads. Track paid Pro conversion against eligible retained contributors. A target of 700 Pro subscribers at 7% conversion requires about 10,000 eligible retained contributors; that is a stretch until the community funnel is proven. API customers require separate founder-led sales and a functioning dataset, so their revenue is the first upside assumption to remove if product work slips.</p>
+<h2 id="9-twelve-month-financial-model">9. Twelve-month financial model</h2>
+<h3 id="funding-and-cost-assumptions">Funding and cost assumptions</h3>
+<p>Planning capital: <strong>$500,000</strong>, not committed or raised. No founder salary or hiring decision should assume these funds exist. If self-funded, operate the first 90 days within an explicitly approved smaller cash envelope and defer hiring.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable information table"><table>
+<thead>
+<tr>
+<th>Monthly fixed cost</th>
+<th style="text-align: right;">Assumption</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Founder/product/engineering compensation</td>
+<td style="text-align: right;">$8,000</td>
+</tr>
+<tr>
+<td>Full-stack/contract engineer</td>
+<td style="text-align: right;">$6,000</td>
+</tr>
+<tr>
+<td>Community/customer lead</td>
+<td style="text-align: right;">$4,000</td>
+</tr>
+<tr>
+<td>Contract design/research</td>
+<td style="text-align: right;">$2,000</td>
+</tr>
+<tr>
+<td>Benefits, payroll burden and employment overhead</td>
+<td style="text-align: right;">$4,000</td>
+</tr>
+<tr>
+<td>Base infrastructure, observability and SaaS</td>
+<td style="text-align: right;">$1,500</td>
+</tr>
+<tr>
+<td>Finance, insurance and administration</td>
+<td style="text-align: right;">$1,500</td>
+</tr>
+<tr>
+<td>Ongoing legal/compliance allowance</td>
+<td style="text-align: right;">$1,500</td>
+</tr>
+<tr>
+<td>Acquisition experiments and community programs</td>
+<td style="text-align: right;">$3,000</td>
+</tr>
+<tr>
+<td><strong>Monthly fixed operating cost</strong></td>
+<td style="text-align: right;"><strong>$31,500</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>One-time budget: $15,000 legal/setup in month 1; $45,000 external security review and remediation allowance in month 6. These are provisional vendor budgets, not quotes or completed audits. Variable costs are 10% of revenue. Taxes on profit, FX changes, chargebacks outside the allowance, financing fees, and material litigation are not modeled. Subscription VAT/sales tax should be collected and remitted where required, not treated as product revenue. The model assumes monthly billing and revenue collection within the same month; annual prepayments and receivables are excluded.</p>
+<p>A machine-readable version is included in <a href="financial-model.csv">financial-model.csv</a>.</p>
+<h3 id="base-case-monthly-schedule">Base-case monthly schedule</h3>
+<p>Month 1 begins at funded commercial development, not at the date of this document. Months 1–3 are a discovery and beta investment. Accounts shown are paying month-end equivalents and approximate the revenue-month average; replace with cohort-level invoice data after launch.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable information table"><table>
+<thead>
+<tr>
+<th>Month</th>
+<th style="text-align: right;">Community accounts</th>
+<th style="text-align: right;">Pro accounts</th>
+<th style="text-align: right;">API clients</th>
+<th style="text-align: right;">Revenue</th>
+<th style="text-align: right;">Total cash cost</th>
+<th style="text-align: right;">Ending cash</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">$0</td>
+<td style="text-align: right;">$46,500</td>
+<td style="text-align: right;">$453,500</td>
+</tr>
+<tr>
+<td>2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">$0</td>
+<td style="text-align: right;">$31,500</td>
+<td style="text-align: right;">$422,000</td>
+</tr>
+<tr>
+<td>3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">$0</td>
+<td style="text-align: right;">$31,500</td>
+<td style="text-align: right;">$390,500</td>
+</tr>
+<tr>
+<td>4</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">$1,375</td>
+<td style="text-align: right;">$31,638</td>
+<td style="text-align: right;">$360,238</td>
+</tr>
+<tr>
+<td>5</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">$2,940</td>
+<td style="text-align: right;">$31,794</td>
+<td style="text-align: right;">$331,384</td>
+</tr>
+<tr>
+<td>6</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">$5,292</td>
+<td style="text-align: right;">$77,029</td>
+<td style="text-align: right;">$259,646</td>
+</tr>
+<tr>
+<td>7</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">$8,422</td>
+<td style="text-align: right;">$32,342</td>
+<td style="text-align: right;">$235,726</td>
+</tr>
+<tr>
+<td>8</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">230</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">$12,829</td>
+<td style="text-align: right;">$32,783</td>
+<td style="text-align: right;">$215,772</td>
+</tr>
+<tr>
+<td>9</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">330</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">$18,213</td>
+<td style="text-align: right;">$33,321</td>
+<td style="text-align: right;">$200,664</td>
+</tr>
+<tr>
+<td>10</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">450</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">$24,476</td>
+<td style="text-align: right;">$33,948</td>
+<td style="text-align: right;">$191,192</td>
+</tr>
+<tr>
+<td>11</td>
+<td style="text-align: right;">85</td>
+<td style="text-align: right;">570</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">$31,238</td>
+<td style="text-align: right;">$34,624</td>
+<td style="text-align: right;">$187,807</td>
+</tr>
+<tr>
+<td>12</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">700</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">$38,190</td>
+<td style="text-align: right;">$35,319</td>
+<td style="text-align: right;">$190,678</td>
+</tr>
+</tbody>
+</table></div>
+<p>Exact annual figures before display rounding: revenue <strong>$142,975</strong>; fixed cost <strong>$378,000</strong>; one-time cost <strong>$60,000</strong>; variable cost <strong>$14,297.50</strong>; total cost <strong>$452,297.50</strong>; cash loss <strong>$309,322.50</strong>; ending cash <strong>$190,677.50</strong>. Month-12 annualized revenue is <strong>$458,280</strong>, not year-one earned revenue. Month-12 operating cash contribution is <strong>$2,871</strong> before tax and any new one-time spending; one positive month is not durable profitability.</p>
+<p><code>Monthly revenue = Community × 199 + Pro × 19 + API × 499</code></p>
+<p><code>Monthly cash change = revenue × 90% − 31,500 − scheduled one-time costs</code></p>
+<p>With this cost base, operating break-even requires <strong>$35,000 monthly revenue</strong>. At Community pricing alone, that requires <strong>176 paying communities</strong> at the same contribution margin. Operational capacity and support costs may increase before that scale, so this is an arithmetic threshold rather than a guaranteed business outcome.</p>
+<h3 id="scenario-discipline">Scenario discipline</h3>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable information table"><table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Revenue assumption</th>
+<th style="text-align: right;">Year revenue</th>
+<th style="text-align: right;">Year-end cash</th>
+<th style="text-align: right;">Month-12 revenue</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Downside</td>
+<td>40% of each month's base revenue; same fixed/one-time costs</td>
+<td style="text-align: right;">$57,190</td>
+<td style="text-align: right;">$113,471</td>
+<td style="text-align: right;">$15,276</td>
+<td>Freeze hiring by month 6, focus on one buyer and paid retention, cut optional API build</td>
+</tr>
+<tr>
+<td>Base</td>
+<td>Schedule above</td>
+<td style="text-align: right;">$142,975</td>
+<td style="text-align: right;">$190,678</td>
+<td style="text-align: right;">$38,190</td>
+<td>Reach operating break-even late in year; prove repeatability before expanding</td>
+</tr>
+<tr>
+<td>Upside</td>
+<td>150% of each month's base revenue; same costs for sensitivity only</td>
+<td style="text-align: right;">$214,463</td>
+<td style="text-align: right;">$255,016</td>
+<td style="text-align: right;">$57,285</td>
+<td>Rebudget support/security before accepting extra volume; upside is not a staffing plan</td>
+</tr>
+<tr>
+<td>No revenue</td>
+<td>Zero revenue for 12 months</td>
+<td style="text-align: right;">$0</td>
+<td style="text-align: right;">$62,000</td>
+<td style="text-align: right;">$0</td>
+<td>Stop expansion; restructure or close before reserve is consumed</td>
+</tr>
+</tbody>
+</table></div>
+<p>Scenario multipliers are a financial sensitivity, not literal fractional customer counts. With no revenue, $500,000 less $60,000 one-time spending funds about <strong>14.0 months</strong> of $31,500 fixed burn; preserving a further $60,000 orderly wind-down reserve leaves <strong>12.1 months</strong>. Base-year ending cash is not a fixed runway estimate because revenue, costs, and retention continue changing.</p>
+<p>Begin a financing or cost-reduction decision when unrestricted cash falls below six months of committed fixed obligations plus the wind-down reserve. Do not rely on future token issuance or a chain grant. A grant, if later awarded, is incremental nonrecurring income, not recurring customer validation.</p>
+<h2 id="10-concrete-90-day-execution-plan">10. Concrete 90-day execution plan</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable information table"><table>
+<thead>
+<tr>
+<th>Period</th>
+<th>Owner</th>
+<th>Work and artifact</th>
+<th>Acceptance / decision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Days 1–7</td>
+<td>Founder + engineer</td>
+<td>Claim screened identity; host website; document chain/contract; test wallet rejection, wrong network, deadline and cancellation states; publish product boundaries</td>
+<td>Working public testnet URL and reproducible end-to-end demo; no fabricated metrics</td>
+</tr>
+<tr>
+<td>Days 8–14</td>
+<td>Founder</td>
+<td>Complete first 10 interviews; build 120-prospect list; draft 12 precise questions; establish resolution log and data policy</td>
+<td>Five pilot candidates name a real use case; resolve three internal practice questions</td>
+</tr>
+<tr>
+<td>Days 15–21</td>
+<td>Engineer + community lead</td>
+<td>Add event indexing and error visibility; improve onboarding from observed sessions; write moderator guide</td>
+<td>Ten observed users; ≥70% complete first testnet record without live assistance, excluding faucet failure separately</td>
+</tr>
+<tr>
+<td>Days 22–30</td>
+<td>Community lead</td>
+<td>Run first three moderated rounds; collect baseline moderator time and participant return</td>
+<td>Three complete recaps, all outcomes traceable, zero unresolved critical integrity bugs</td>
+</tr>
+<tr>
+<td>Days 31–45</td>
+<td>Founder + engineer</td>
+<td>Expand to eight live pilots; add complete-history exports; implement confidence and sample-size analysis correctly</td>
+<td>≥100 activated contributors; five communities agree to repeat; source ambiguity &lt;5% of questions</td>
+</tr>
+<tr>
+<td>Days 46–60</td>
+<td>Founder + community lead</td>
+<td>Run second rounds; conduct price interviews; obtain security/legal quotes; build billing only after commitments</td>
+<td>Three paid commitments; outcome revisit ≥35%; repeat moderator workflow demonstrated</td>
+</tr>
+<tr>
+<td>Days 61–75</td>
+<td>Engineer + reviewer</td>
+<td>Add commercial workspace roles and signed web sessions if needed; resolve top security findings; publish operating/dispute process</td>
+<td>No unresolved critical/high security findings in release scope; admin actions monitored</td>
+</tr>
+<tr>
+<td>Days 76–90</td>
+<td>Founder</td>
+<td>Review retention cohorts, realized support cost and conversion; invoice first beta customers; publish honest launch update</td>
+<td>≥150 activated contributors, ≥25% week-four retention, three paying communities; decide continue, narrow, or stop</td>
+</tr>
+</tbody>
+</table></div>
+<p>The 90-day fixed-cost allocation under the funded model is $94,500 plus $15,000 setup, or <strong>$109,500</strong>, with no assumed revenue. The large independent review is budgeted in month 6, but any earlier production commitment requiring one must move the expense forward. Testnet participation alone does not justify a paid-mainnet or financial product launch.</p>
+<h3 id="decision-gates">Decision gates</h3>
+<ul>
+<li><strong>Day 30:</strong> if fewer than five credible pilot candidates emerge from 20+ interviews, revise the buyer/problem before adding features.</li>
+<li><strong>Day 60:</strong> if fewer than five communities repeat or no one accepts a concrete price, freeze consumer growth work and solve the workflow problem.</li>
+<li><strong>Day 90:</strong> if retention is below 15% and fewer than three communities pay, do not scale. Run one six-week narrowed experiment within an approved budget or stop the commercial build.</li>
+<li><strong>Mainnet gate:</strong> reviewed contracts and admin process, reliable indexing, resolution evidence, documented privacy/terms, incident response, paid RPC, and enough retained demand to justify operating cost. No monetary stakes are introduced automatically by going mainnet.</li>
+<li><strong>Execution gate:</strong> separate counsel-led jurisdiction review, required licensing/partners, custody model, sanctions controls, asset eligibility, liquidity, exchange integrations and security review. Excluded from the current financial base case.</li>
+</ul>
+<h2 id="11-metrics-scoring-and-data-integrity">11. Metrics, scoring and data integrity</h2>
+<p><strong>North-star metric:</strong> weekly returning contributors with at least one eligible, completed forecast cycle. A cycle requires an on-time record and a subsequent outcome revisit. Report wallets as wallets, not verified humans.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable information table"><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Definition</th>
+<th>Initial threshold / use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Activation</td>
+<td>First successful forecast plus first outcome revisit</td>
+<td>Track conversion from qualified question views and wallet connects separately</td>
+</tr>
+<tr>
+<td>Time to first record</td>
+<td>First call view to confirmed receipt; faucet wait recorded separately</td>
+<td>Median &lt;3 minutes among funded-wallet users</td>
+</tr>
+<tr>
+<td>Week-four retention</td>
+<td>Activated cohort wallets with a valid record in days 22–28</td>
+<td>≥25% target; denominator and cohort dates published internally</td>
+</tr>
+<tr>
+<td>Community repeat rate</td>
+<td>Pilots that run a second round / completed first-round pilots</td>
+<td>≥60%</td>
+</tr>
+<tr>
+<td>Resolution timeliness</td>
+<td>Questions resolved within promised window / eligible matured questions</td>
+<td>≥95%; all delays explained</td>
+</tr>
+<tr>
+<td>Cancellation rate</td>
+<td>Cancelled / matured questions</td>
+<td>&lt;5% once question templates stabilize; never suppress valid cancellation</td>
+</tr>
+<tr>
+<td>Transaction success</td>
+<td>Confirmed valid submissions / attempted signed submissions</td>
+<td>≥98%, excluding explicit user rejections and separately reporting RPC errors</td>
+</tr>
+<tr>
+<td>Revenue quality</td>
+<td>Collected subscriptions, refunds, churn and retained cohorts</td>
+<td>No unsigned LOIs counted as revenue</td>
+</tr>
+<tr>
+<td>Support burden</td>
+<td>Staff minutes per active community per week</td>
+<td>&lt;30 minutes after onboarding; monitor before margins are claimed</td>
+</tr>
+</tbody>
+</table></div>
+<p>Confidence analysis is planned, not a claim about current UI functionality. For binary forecasting, convert the chosen side and confidence into <code>p(YES)</code>: YES with 70% confidence means 0.70; NO with 70% means 0.30. The Brier score for a resolved outcome is <code>(p − outcome)^2</code>; lower is better. A YES/70% forecast scores 0.09 when YES occurs and 0.49 when NO occurs. Publish sample size, question mix, deadlines and cancellation exclusions alongside any aggregate score. Do not convert it into an investment-return measure.</p>
+<p>Leaderboards can be gamed through many wallets, cherry-picked easy questions and small samples. Use a minimum of 20 eligible resolved calls before showing a comparative badge, show full history, separate topic/lead-time cohorts, and mark wallet-only identity. Reputation must not be purchasable. Any change to scoring should be versioned and documented.</p>
+<p>Analytics should capture question views, rules views, connect attempts, network changes, submission attempts, receipts, resolution publication and outcome revisits. Minimize wallet-to-social identity linkage; obtain consent for notifications and community account linking. Never log private keys, wallet secrets or signature payloads unnecessarily. Onchain data is public and generally cannot be deleted; disclose this before writing user-selected content.</p>
+<h2 id="12-technical-and-operating-model">12. Technical and operating model</h2>
+<h3 id="prototype-architecture">Prototype architecture</h3>
+<p>Vue frontend → user-controlled EVM wallet → Robinhood Chain testnet contract → public transaction/explorer record. The app requests signatures or transactions through the wallet. It does not ask users to enter or export private keys. The provided deployment key is an operational secret and must remain outside source control, builds, browser bundles, analytics, documentation and images.</p>
+<h3 id="commercial-architecture-to-build">Commercial architecture to build</h3>
+<p>Add a managed RPC provider, event indexer, relational read model, durable source/evidence storage, subscription service, and opt-in community integration. Chain events remain the record source; the read model accelerates queries and can be rebuilt. Use server-side wallet-signature verification for authenticated offchain workspaces; a browser-connected address alone does not authenticate an account to a backend.</p>
+<p>Version the question schema and contract deployment manifest. Store UTC timestamps and explicit source semantics. Handle RPC timeouts, replaced/reverted transactions, chain reorganizations, indexing delay and duplicate event processing. Do not show a local success state until a successful receipt is observed. A single owner key is acceptable only as a disclosed testnet limitation; use multisignature control and documented role separation before a production release.</p>
+<h3 id="operating-roles">Operating roles</h3>
+<ul>
+<li>Founder/product lead owns discovery, pricing, roadmap, compliance vendor coordination and fundraising.</li>
+<li>Engineer owns contract/frontend reliability, indexer, wallet states, release checks and technical incident response.</li>
+<li>Community lead owns pilot schedules, moderator onboarding, question quality, resolution evidence and support.</li>
+<li>Independent reviewer checks security-critical code; external counsel assesses product claims and jurisdictions. Neither role exists merely because it is budgeted.</li>
+</ul>
+<p>Daily: review pending/matured questions, RPC/indexer health, failed transactions, support and suspicious activity. Weekly: publish pilot recaps, review retention and source ambiguity, conduct customer interviews, reconcile revenue. Monthly: review access rights, admin-key procedure, cash forecast, legal/product changes and cancellation/dispute patterns.</p>
+<p>Incident response should identify an on-call owner, preserve evidence, disable affected submissions in the UI when necessary, publish status, and explain recovery. Pausing a website does not stop direct contract interactions; document contract-level controls accurately. Contract administration must never silently rewrite past forecasts.</p>
+<h2 id="13-risks-and-mitigations">13. Risks and mitigations</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable information table"><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Why it matters</th>
+<th>Concrete response / gate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No willingness to pay</td>
+<td>Free polls may solve most of the job</td>
+<td>Sell recurring moderator time savings; require paid commitments by day 90</td>
+</tr>
+<tr>
+<td>Wallet friction</td>
+<td>Testnet funding and network switching reduce activation</td>
+<td>Permit browsing first; show clear network flow; measure faucet friction separately; evaluate limited sponsorship later</td>
+</tr>
+<tr>
+<td>Biased or wrong resolution</td>
+<td>Onchain storage preserves a bad judgment too</td>
+<td>Fix rules before open; publish source evidence; second-person review; cancellation and documented disputes</td>
+</tr>
+<tr>
+<td>Contract/admin compromise</td>
+<td>False outcomes or altered operations damage trust</td>
+<td>Narrow contract scope; no funds held; independent review; multisig before production; access monitoring</td>
+</tr>
+<tr>
+<td>Sybil and selective history</td>
+<td>Wallet count can be inflated and records cherry-picked</td>
+<td>Count wallets accurately; complete history; minimum samples; no token-driven growth; explicit identity limits</td>
+</tr>
+<tr>
+<td>Regulatory reclassification</td>
+<td>Rewards, recommendations or execution can change obligations</td>
+<td>No financial stakes in base product; counsel reviews expansion, marketing and jurisdiction exposure</td>
+</tr>
+<tr>
+<td>Market-data licensing</td>
+<td>Publicly visible prices may not be freely redistributable</td>
+<td>Use permitted reference links; obtain rights before commercial feeds/redistribution; review API contracts</td>
+</tr>
+<tr>
+<td>Privacy and permanence</td>
+<td>Public wallet records can identify people indirectly</td>
+<td>No personal information in question submissions; minimize linking; clear notice and consent for offchain data</td>
+</tr>
+<tr>
+<td>Dependency failure</td>
+<td>Chain, RPC, wallet, X or community platforms can change</td>
+<td>Paid RPC redundancy; own exportable data; public status; portable links; no platform scraping dependency for core use</td>
+</tr>
+<tr>
+<td>Brand availability changes</td>
+<td>Checks do not reserve a domain or X handle</td>
+<td>Owner claims exact identities before launch; obtain professional trademark review before substantial spend</td>
+</tr>
+<tr>
+<td>Financial shortfall</td>
+<td>Revenue may lag hiring</td>
+<td>Milestone hiring, monthly cash reforecast, reserve floor, explicit stop/narrow gates</td>
+</tr>
+<tr>
+<td>Reputation harms</td>
+<td>Public scores can overstate competence</td>
+<td>Explain sample limits; prohibit return claims; fair moderation and correction policy</td>
+</tr>
+</tbody>
+</table></div>
+<p>No-stakes operation lowers some economic risks but does not itself guarantee exemption from consumer, privacy, advertising, gaming, securities, or other law. The launch jurisdiction, operator entity and actual behavior determine obligations. Robinhood Chain's openness does not override Stock Token restrictions or create an affiliation with Robinhood. Do not show Robinhood logos as an endorsement.</p>
+<h2 id="14-twelve-month-roadmap-and-long-term-option">14. Twelve-month roadmap and long-term option</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable information table"><table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Product outcome</th>
+<th>Commercial evidence required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Months 1–3</td>
+<td>Reliable testnet record loop, resolution operations, first complete community rounds</td>
+<td>Five repeating communities and three paying commitments</td>
+</tr>
+<tr>
+<td>Months 4–6</td>
+<td>Paid Community beta, indexing/export, billing, reviewed security scope, structured question library</td>
+<td>18 Community / 90 Pro target by month 6; actual retention and support economics reported</td>
+</tr>
+<tr>
+<td>Months 7–9</td>
+<td>Community integrations, calibration views, dependable evidence and API pilot</td>
+<td>55 Community / 330 Pro / 2 API target; positive cohort contribution; paid API design partners</td>
+</tr>
+<tr>
+<td>Months 10–12</td>
+<td>Repeatable onboarding, portable profile/embed, production readiness assessment</td>
+<td>100 Community / 700 Pro / 10 API stretch target; $35,000+ monthly revenue needed for baseline operating break-even</td>
+</tr>
+</tbody>
+</table></div>
+<p>The longer-term opportunity is an open forecast-record standard usable by community tools, research products and agent systems. Partners could consume permissioned/appropriately licensed records, question definitions and calibration summaries through an API. An AI agent should be separately labeled and should not be counted as a human participant. Data quality, schema stability, permission controls and verified demand must precede this expansion.</p>
+<p>Financial execution is an option, not the destination required to make the model work. If communities later demand it, partner evaluation must preserve explicit user choices and meet separate legal and security requirements. The company should be able to survive on software subscriptions without taking custody or encouraging more trading.</p>
+<h2 id="15-launch-completion-checklist">15. Launch completion checklist</h2>
+<ul>
+<li>Owner has claimed the selected domain and X handle; any registration failure is reported rather than hidden with a different string.</li>
+<li>Hosted site resolves over HTTPS; canonical domain, social previews and metadata use the final identity.</li>
+<li>Website clearly labels testnet, no monetary stakes, owner resolution, cancellation, and unaudited prototype status where applicable.</li>
+<li>Wallet submission is exercised on the deployed contract and the transaction/contract links are verifiable.</li>
+<li>Private deployment material is ignored by source control and absent from frontend output.</li>
+<li>English logo, X avatar, X banner, bio and three JPG post assets are reviewed; publishing uses an authorized owner account.</li>
+<li>Terms, privacy, acceptable-use and resolution policies are reviewed for the actual launch entity and jurisdictions before a commercial release.</li>
+<li>First pilot dates, community owners, questions, source definitions and recap responsibilities are assigned.</li>
+<li>Financial assumptions are replaced with observed results each month; failures trigger the stated gates.</li>
+</ul>
+<h2 id="sources-and-evidence-boundaries">Sources and evidence boundaries</h2>
+<p>Primary-source research and visual comparisons are documented in <a href="market-and-design.html">market-and-design.md</a>. Key sources accessed on 17 September 2026:</p>
+<ol>
+<li><a href="https://outrive.xyz/">Outrive homepage</a>, <a href="https://docs.outrive.xyz/calls">Calls</a>, and <a href="https://docs.outrive.xyz/fee-tiers">Fee Tiers</a>: social product mechanics and execution-based monetization.</li>
+<li><a href="https://docs.robinhood.com/chain/">Robinhood Chain introduction</a> and <a href="https://docs.robinhood.com/chain/connecting/">network connection details</a>: EVM architecture, network configuration, provider requirements.</li>
+<li><a href="https://docs.robinhood.com/chain/oracles-and-price-feeds/">Oracle and price-feed documentation</a>: source semantics, multiplier, staleness, sequencer and corporate-action handling.</li>
+<li><a href="https://robinhood.com/us/en/crypto/chain/">Robinhood Chain product and legal disclosures</a>: Stock Token nature and geographic restrictions.</li>
+<li><a href="https://hyperliquid.xyz/">Hyperliquid</a>, <a href="https://jup.ag/">Jupiter</a>, <a href="https://www.pendle.finance/">Pendle</a> and <a href="https://morpho.org/">Morpho</a>: product communication and interface patterns.</li>
+</ol>
+<p>These sources establish observed external product behavior and network context. They do not validate Forevane's demand, market-size assumptions, projected financial results, regulatory status, security, domain ownership, account ownership, or future integrations.</p><p class="version">Forevane / Version 0.1 / 17 September 2026. Independent project. Not affiliated with Robinhood.</p></main>
+<footer class="foot"><span>A new direction for your conviction.<br>No monetary stakes. Owner-resolved outcomes.</span><span class="foot-links"><a href="/docs/privacy.html">Privacy</a><a href="/docs/business-plan.pdf">Business plan (PDF)</a><a href="/">Back to Forevane</a></span></footer></body></html>
