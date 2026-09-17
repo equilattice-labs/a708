@@ -1,4 +1,4 @@
-# Forevane website
+# Convistelle website
 
 Vue 3, Vite, ethers v6 and Lucide icons. Styling and illustration assets are original. Text, downloadable business plan and social assets are English.
 

@@ -1,5 +1,6 @@
 export const BRAND = {
-  name: "Forevane",
-  domain: "forevane.xyz",
-  handle: "forevane",
+  name: "Convistelle",
+  domain: "convistelle.xyz",
+  handle: "convistelle",
+  tagline: "A point of view. A proof of thought.",
 };
