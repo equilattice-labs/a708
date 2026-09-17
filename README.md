@@ -1,6 +1,6 @@
-# Convistelle website
+# Quorivista website
 
-Vue 3, Vite, ethers v6 and Lucide icons. Styling and illustration assets are original. Text, downloadable business plan and social assets are English.
+Vue 3, Vite, ethers v6 and Lucide icons. English interface, documents and launch assets. The blue-and-white design uses horizontal navigation, forecast cards, wallet dialogs and a blue personal-record section.
 
 ```sh
 npm ci
@@ -9,8 +9,8 @@ npm run build
 npm run preview
 ```
 
-Deploy `dist/` to an HTTPS static host. `public/deployment.json` contains public contract metadata, never a private key. Wallet interactions run in the user's wallet; read-only chain calls use the official testnet RPC. The private `../key.txt` belongs only to contract deployment scripts and must never be copied here.
+Use the address printed by Vite. Deploy only `dist/` to an HTTPS static host. `public/deployment.json` holds public contract metadata. Wallet interactions run through the user's wallet; read-only calls use the official testnet RPC. The private `../key.txt` belongs only to contract deployment scripts and must never be copied into this site.
 
-No backend, account database, paid plans, bots, email collection, analytics tracking or real-money trading is included. Wallet verification is a five-minute browser-memory ownership check. Chain actions are authorized by wallet transactions.
+There is no backend, account database, paid plan, bot, email collection, tracking integration or real-money trading. Wallet verification is a five-minute browser-memory ownership check. Chain writes require a separate wallet transaction and confirmation.
 
-See `../README.md`, `../docs/verification.md` and `../contracts/README.md` for complete operational details.
+The current identity is Quorivista / quorivista.xyz / @quorivista. The domain and handle are proposed, not registered by this delivery. See `../README.md`, `../docs/brand-guide.md`, `../docs/verification.md` and `../contracts/README.md` for identity, acceptance and operational details.
