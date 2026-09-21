@@ -38,6 +38,8 @@ import {
   chainMarkets,
   chainState,
   record,
+  recordState,
+  refreshRecord,
   forecasts,
   shortAddress,
   discoverWallets,
@@ -62,7 +64,8 @@ const modal = ref(null),
   activeSection = ref("forecasts"),
   walletReturn = ref(false),
   reviewCall = ref(false),
-  demoSide = ref(true);
+  demoSide = ref(true),
+  inspectedId = ref(null);
 const dialogRef = ref(null),
   lastFocus = ref(null),
   now = ref(Date.now());
@@ -80,10 +83,10 @@ const categories = [
   "My calls",
 ];
 const navigation = [
-  { id: "forecasts", label: "Discover", icon: LayoutGrid, number: "01" },
+  { id: "forecasts", label: "The board", icon: Compass, number: "01" },
   { id: "record", label: "My record", icon: Fingerprint, number: "02" },
-  { id: "how-it-works", label: "How it works", icon: BookOpen, number: "03" },
-  { id: "communities", label: "Community", icon: Users, number: "04" },
+  { id: "how-it-works", label: "The method", icon: BookOpen, number: "03" },
+  { id: "communities", label: "Common ground", icon: Users, number: "04" },
 ];
 const examples = [
   {
@@ -167,6 +170,29 @@ const openCount = computed(
       (m) => !m.outcome && m.closesAt * 1000 > now.value,
     ).length,
 );
+const inspectedMarket = computed(
+  () =>
+    displayMarkets.value.find((m) => m.id === inspectedId.value) ||
+    displayMarkets.value[0],
+);
+const myMarkets = computed(() =>
+  allMarkets.value.filter((m) => forecasts.value[m.id]?.exists),
+);
+function inspectMarket(m) {
+  inspectedId.value = m.id;
+  if (window.matchMedia("(max-width: 800px)").matches) {
+    nextTick(() => {
+      const panel = document.getElementById("question-dossier");
+      panel?.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "instant"
+          : "smooth",
+        block: "start",
+      });
+      panel?.focus({ preventScroll: true });
+    });
+  }
+}
 const totalCalls = computed(() =>
   chainMarkets.value.reduce(
     (total, m) => total + Number(m.totalForecasts || 0),
@@ -247,12 +273,23 @@ function resetFilters() {
 }
 function navigate(id) {
   activeSection.value = id;
+  if (location.hash !== `#${id}`) location.hash = id;
+  nextTick(() => {
+    document.getElementById("main")?.focus({ preventScroll: true });
+    window.scrollTo({ top: 0, behavior: "instant" });
+  });
+}
+function browseQuestions() {
+  resetFilters();
+  navigate("forecasts");
+}
+function retryRecord() {
+  return chainState.value === "ready" ? refreshRecord() : loadChain();
 }
 function showMyCalls() {
   category.value = "My calls";
   search.value = "";
-  activeSection.value = "forecasts";
-  location.hash = "forecasts";
+  navigate("forecasts");
 }
 function openWallet() {
   walletReturn.value = modal.value === "forecast";
@@ -376,7 +413,27 @@ function setReview(value) {
 }
 function syncHash() {
   const id = location.hash.slice(1);
-  activeSection.value = navigation.some((n) => n.id === id) ? id : "forecasts";
+  if (id === "main") return;
+  if (id === "question-board") {
+    activeSection.value = "forecasts";
+    nextTick(() => document.getElementById(id)?.scrollIntoView());
+    return;
+  }
+  activeSection.value =
+    id === "questions"
+      ? "how-it-works"
+      : navigation.some((n) => n.id === id)
+        ? id
+        : "forecasts";
+  nextTick(() => {
+    if (modal.value) return;
+    const target = document.getElementById(
+      id === "questions" ? "questions" : "main",
+    );
+    target?.focus({ preventScroll: true });
+    if (id === "questions") target?.scrollIntoView();
+    else window.scrollTo({ top: 0, behavior: "instant" });
+  });
 }
 function fulfillDeepLink() {
   if (deepLinkHandled || chainState.value !== "ready") return;
@@ -431,616 +488,817 @@ onUnmounted(() => {
 <template>
   <div class="app-shell" :inert="modal ? true : undefined">
     <a href="#main" class="skip-link">Skip to content</a>
-    <header class="site-header">
-      <a href="#main" class="wordmark" :aria-label="`${BRAND.name} home`">
-        <img src="/brand/mark.svg" alt="" width="36" height="36" />{{
-          BRAND.name.toLowerCase()
-        }}
+    <aside class="side-rail">
+      <a
+        href="#forecasts"
+        class="rail-brand"
+        :aria-label="BRAND.name + ' home'"
+        @click.prevent="navigate('forecasts')"
+      >
+        <img src="/brand/mark.svg?v=opiquill" alt="" width="42" height="42" />
+        <span>{{ BRAND.name }}</span>
       </a>
+      <span class="rail-caption">A PUBLIC THINKING ROOM</span>
       <nav class="desktop-nav" aria-label="Main navigation">
         <a
           v-for="item in navigation"
-          :key="item.id"
-          :href="`#${item.id}`"
+          :key="item.id" :aria-label="item.label"
+          :href="'#' + item.id"
           :class="{ active: activeSection === item.id }"
-          :aria-current="activeSection === item.id ? 'location' : undefined"
-          @click="navigate(item.id)"
-          >{{ item.label }}</a
+          :aria-current="activeSection === item.id ? 'page' : undefined"
+          @click.prevent="navigate(item.id)"
         >
+          <span class="nav-number">{{ item.number }}</span>
+          <component :is="item.icon" :size="18" /><span>{{ item.label }}</span>
+          <ArrowUpRight
+            v-if="activeSection === item.id"
+            class="nav-arrow"
+            :size="15"
+          />
+        </a>
       </nav>
-      <button
-        class="button wallet-button"
-        @click="verified ? (modal = 'account') : openWallet()"
-      >
-        <Wallet :size="17" /><span>{{
-          verified ? shortAddress : "Connect wallet"
-        }}</span>
-      </button>
-    </header>
+      <div class="rail-bottom">
+        <span class="rail-seal" aria-hidden="true">O / Q</span>
+        <p>Independent minds.<br />A public record.</p>
+        <a href="/docs/litepaper.html"
+          >Read the field notes <ArrowUpRight :size="14"
+        /></a>
+        <span class="rail-edition">ROBINHOOD CHAIN / TESTNET</span>
+      </div>
+    </aside>
 
-    <main id="main">
-      <section class="hero page-width" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <div class="pilot-pill">
-            <span class="status-dot"></span> A SOCIAL FORECASTING EXPERIMENT
-          </div>
-          <h1 id="hero-title">
-            Think ahead.<br /><span
-              >Leave your<br class="desktop-break" />
-              mark.</span
+    <div class="workspace">
+      <header class="masthead">
+        <a
+          href="#forecasts"
+          class="mobile-brand"
+          @click.prevent="navigate('forecasts')"
+        >
+          <img
+            src="/brand/mark.svg?v=opiquill"
+            alt=""
+            width="30"
+            height="30"
+          />{{ BRAND.name }}
+        </a>
+        <div class="edition-label">
+          <span
+            class="status-dot"
+            :class="{ connected: chainState === 'ready' }"
+          ></span>
+          <span>THE FORECASTING EXPERIMENT</span
+          ><span class="edition-divider">/</span><span>VOL. 001</span>
+        </div>
+        <button
+          class="button wallet-button"
+          @click="verified ? (modal = 'account') : openWallet()"
+        >
+          <Wallet :size="16" /><span>{{
+            verified ? shortAddress : "Connect wallet"
+          }}</span
+          ><ArrowUpRight :size="15" />
+        </button>
+      </header>
+
+      <main id="main" tabindex="-1">
+        <template v-if="activeSection === 'forecasts'">
+          <section class="editorial-hero" aria-labelledby="hero-title">
+            <div class="hero-copy">
+              <p class="eyebrow">
+                <span class="section-index">01</span> OPINIONS, WITH A PAPER
+                TRAIL.
+              </p>
+              <h1 id="hero-title">The future<br />is <em>unwritten.</em></h1>
+              <div class="hero-bottom">
+                <p>
+                  Have a view on what comes next?<br />Put it on record. Let
+                  time do the talking.
+                </p>
+                <a
+                  class="round-link"
+                  href="#question-board"
+                  aria-label="Explore the question board"
+                  ><ArrowDown :size="24"
+                /></a>
+              </div>
+            </div>
+            <div class="editorial-art" aria-hidden="true">
+              <div class="art-header">
+                <span>A LITTLE CONVICTION</span><span>↗</span>
+              </div>
+              <div class="type-yes">YES<span>?</span></div>
+              <div class="art-divider">
+                <span>ROOM FOR ANOTHER VIEW</span><i></i>
+              </div>
+              <div class="type-no">NO<span>.</span></div>
+              <div class="art-footer">
+                <span>THINK IT.<br />WRITE IT INTO THE RECORD.</span
+                ><span class="art-asterisk">✳</span>
+              </div>
+              <div class="editorial-stamp">YOUR VIEW<br /><b>COUNTS.</b></div>
+            </div>
+          </section>
+          <div class="ticker-strip">
+            <span
+              ><ShieldCheck :size="16" /> OPINIONS ONLY. NO REAL-MONEY
+              STAKES.</span
             >
-          </h1>
-          <p>
-            Your take on what comes next deserves more than a disappearing post.
-            Make a call. Build a record. See how you think.
-          </p>
-          <div class="hero-actions">
-            <a
-              class="button primary"
-              href="#forecasts"
-              @click="navigate('forecasts')"
-              >Explore questions <ArrowUpRight :size="19" /></a
-            ><a
-              class="text-link"
-              href="#how-it-works"
-              @click="navigate('how-it-works')"
-              >How it works <ArrowRight :size="16"
+            <span
+              ><b>{{ chainState === "ready" ? openCount : "—" }}</b> OPEN
+              QUESTIONS</span
+            >
+            <span
+              ><b>{{ chainState === "ready" ? totalCalls : "—" }}</b> RECORDED
+              CALLS</span
+            >
+            <a href="/docs/litepaper.html"
+              >THE PILOT, EXPLAINED <ArrowUpRight :size="14"
             /></a>
           </div>
-          <p class="hero-note">
-            <ShieldCheck :size="15" /> Testnet only. No deposits. No payouts.
-          </p>
-        </div>
-        <div class="perspective-art" aria-hidden="true">
-          <div class="art-orbit orbit-back"></div>
-          <div class="art-sphere"></div>
-          <div class="art-tile tile-back">
-            <span>A DIFFERENT PERSPECTIVE</span
-            ><strong>NO<span>↗</span></strong>
-            <div class="tile-rule"></div>
-            <small>There is room for another view.</small>
-          </div>
-          <div class="art-tile tile-front">
-            <div class="tile-top">
-              <span>YOUR POINT OF VIEW</span><span class="tile-star">✳</span>
-            </div>
-            <strong>YES<span>↗</span></strong>
-            <div class="tile-confidence">
-              <span>Conviction</span><b>78<small>%</small></b>
-            </div>
-            <div class="tile-progress"><i></i></div>
-            <div class="tile-bottom">
-              <span>THINK IT. RECORD IT.</span><Check :size="15" />
-            </div>
-          </div>
-          <div class="art-orbit orbit-front"></div>
-          <div class="art-sticker">
-            <Check :size="18" /><span
-              >A view worth<br /><strong>recording.</strong></span
-            >
-          </div>
-          <span class="art-footnote"
-            >ILLUSTRATIVE CALL · YOUR VIEW IS YOUR OWN</span
-          >
-        </div>
-      </section>
-      <div class="network-strip page-width">
-        <div class="network-identity">
-          <span class="network-symbol">↗</span
-          ><span>Built on<strong>Robinhood Chain</strong></span
-          ><span class="testnet-label">TESTNET</span>
-        </div>
-        <div class="network-stat">
-          <b>{{ chainState === "ready" ? openCount : "—" }}</b
-          ><span>open questions</span>
-        </div>
-        <div class="network-stat">
-          <b>{{ chainState === "ready" ? totalCalls : "—" }}</b
-          ><span>recorded opinions</span>
-        </div>
-        <a href="/docs/litepaper.html" class="network-manifesto"
-          >Independent minds.<br /><strong
-            >One public record. <ArrowUpRight :size="15" /></strong
-        ></a>
-      </div>
 
-      <section id="forecasts" class="board-section page-width">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">THE QUESTION IS OPEN</p>
-            <h2>What's your take?</h2>
-            <p class="section-intro">
-              Explore an idea. Weigh the evidence. Put your perspective on
-              record.
-            </p>
-          </div>
-          <div class="board-status" role="status">
-            <span
-              class="status-dot"
-              :class="{ connected: chainState === 'ready' }"
-            ></span
-            ><span>{{
-              chainState === "ready"
-                ? "Live on testnet"
-                : chainState === "loading"
-                  ? "Connecting to testnet…"
-                  : "Preview mode"
-            }}</span
-            ><button
-              class="icon-button"
-              aria-label="Refresh forecasts"
-              :disabled="chainState === 'loading'"
-              @click="loadChain()"
-            >
-              <RefreshCw
-                :size="16"
-                :class="{ spin: chainState === 'loading' }"
-              />
-            </button>
-          </div>
-        </div>
-        <div class="board-controls">
-          <div class="category-tabs" role="group" aria-label="Filter forecasts">
-            <button
-              v-for="tab in categories"
-              :key="tab"
-              :class="{ active: category === tab }"
-              :aria-pressed="category === tab"
-              @click="category = tab"
-            >
-              {{ tab
-              }}<span v-if="tab === 'My calls' && record">{{
-                record.total
-              }}</span>
-            </button>
-          </div>
-          <div class="board-tools">
-            <label class="search-field"
-              ><Search :size="18" /><input
-                v-model="search"
-                type="search"
-                aria-label="Search forecasts"
-                placeholder="Find a question…" /></label
-            ><label class="sort-field"
-              ><SlidersHorizontal :size="17" /><select
-                v-model="sort"
-                aria-label="Sort forecasts"
-              >
-                <option value="closing">Closing soon</option>
-                <option value="newest">Newest first</option>
-                <option value="participation">Most calls</option>
-              </select></label
-            >
-          </div>
-        </div>
-        <div class="result-context">
-          <span
-            >{{
-              chainState === "loading"
-                ? "Loading questions…"
-                : `${displayMarkets.length} ${displayMarkets.length === 1 ? "question" : "questions"} to explore`
-            }}<span v-if="chainState === 'unavailable'">
-              · Illustrative examples</span
-            ></span
-          ><button v-if="hasFilters" @click="resetFilters">
-            Reset filters <X :size="13" />
-          </button>
-        </div>
-        <div
-          v-if="chainState === 'unavailable'"
-          class="offline-notice"
-          role="status"
-        >
-          <Radio :size="19" />
-          <p>
-            Live forecasts are temporarily unavailable. These examples give you
-            a feel for the experience.
-          </p>
-          <button @click="loadChain()">
-            Try again <RefreshCw :size="15" />
-          </button>
-        </div>
-        <div
-          v-if="chainState === 'loading'"
-          class="loading-grid"
-          role="status"
-          aria-label="Loading live forecasts"
-        >
-          <div v-for="n in 3" :key="n" class="skeleton-card">
-            <span></span><i></i><i></i><b></b>
-          </div>
-          <p>Reading the public testnet. This may take a moment.</p>
-        </div>
-        <div v-else-if="displayMarkets.length" class="market-grid">
-          <article
-            v-for="m in displayMarkets"
-            :key="m.id"
-            class="market-card"
-            :class="`asset-${m.ticker.toLowerCase()}`"
+          <section
+            id="forecasts"
+            class="board-section"
+            aria-labelledby="board-title"
           >
-            <div class="market-top">
-              <div class="asset-identity">
-                <span class="asset-icon">{{ m.icon }}</span>
-                <div>
-                  <strong>{{ m.ticker }}</strong
-                  ><small>{{ m.category }}</small>
-                </div>
+            <div id="question-board" class="section-heading">
+              <div>
+                <p class="eyebrow">THE OPEN QUESTION DESK</p>
+                <h2 id="board-title">Make up your mind.</h2>
               </div>
-              <span
-                class="market-status"
-                :class="{
-                  resolved: m.outcome,
-                  closed: !m.outcome && m.closesAt * 1000 <= now,
-                }"
-                ><i></i
-                >{{ chainState === "ready" ? status(m) : "Example" }}</span
-              >
-            </div>
-            <h3>
-              <button @click="openForecast(m)">{{ m.question }}</button>
-            </h3>
-            <p class="market-deadline">
-              <Clock3 :size="14" />{{
-                chainState === "ready"
-                  ? `Closes ${dateLabel(m.closesAt)} · UTC`
-                  : "Illustrative scenario · not live data"
-              }}
-            </p>
-            <div class="market-sentiment">
-              <div class="sentiment-heading">
-                <span>{{
-                  m.probability === null
-                    ? "Be the first to take a side"
-                    : chainState === "ready"
-                      ? "The crowd leans"
-                      : "An example perspective"
-                }}</span
-                ><strong
-                  >{{ m.probability === null ? "—" : `${m.probability}%`
-                  }}<small v-if="m.probability !== null">YES</small></strong
-                >
-              </div>
-              <div class="sentiment-bar">
-                <span :style="{ width: `${m.probability ?? 0}%` }"></span>
-              </div>
-              <div class="sentiment-caption">
+              <div class="board-status" role="status">
+                <span
+                  class="status-dot"
+                  :class="{ connected: chainState === 'ready' }"
+                ></span>
                 <span>{{
                   chainState === "ready"
-                    ? `${m.totalForecasts} recorded calls`
-                    : "Read-only preview"
-                }}</span
-                ><span v-if="forecasts[m.id]?.exists" class="recorded-label"
-                  ><Check :size="13" />Your call recorded</span
-                ><span v-else>Every view counts</span>
+                    ? "Live on testnet"
+                    : chainState === "loading"
+                      ? "Reading testnet…"
+                      : "Preview edition"
+                }}</span>
+                <button
+                  class="icon-button"
+                  aria-label="Refresh forecasts"
+                  :disabled="chainState === 'loading'"
+                  @click="loadChain()"
+                >
+                  <RefreshCw
+                    :size="16"
+                    :class="{ spin: chainState === 'loading' }"
+                  />
+                </button>
               </div>
             </div>
-            <button class="card-action" @click="openForecast(m)">
-              <span>{{
-                chainState !== "ready"
-                  ? "Explore this example"
-                  : m.outcome
-                    ? "See the outcome"
-                    : forecasts[m.id]?.exists
-                      ? "View your call"
-                      : m.closesAt * 1000 <= now
-                        ? "View question"
-                        : "Make your call"
-              }}</span
-              ><ArrowUpRight :size="19" />
-            </button>
-          </article>
-        </div>
-        <div v-else class="empty-state">
-          <span class="empty-icon"
-            ><component
-              :is="category === 'My calls' ? Fingerprint : Search"
-              :size="29"
-          /></span>
-          <h3>
-            {{
-              category === "My calls" && !verified
-                ? "Your story starts with a wallet."
-                : search
-                  ? "No questions match that search."
-                  : category === "My calls"
-                    ? "Your first call is still ahead."
-                    : "No questions here just yet."
-            }}
-          </h3>
-          <p>
-            {{
-              category === "My calls" && !verified
-                ? "Connect your wallet to find your public forecasting record."
-                : "Try another category or reset your filters to explore the board."
-            }}
-          </p>
-          <button
-            class="button primary"
-            @click="
-              category === 'My calls' && !verified
-                ? openWallet()
-                : resetFilters()
-            "
-          >
-            {{
-              category === "My calls" && !verified
-                ? "Connect wallet"
-                : "Explore all questions"
-            }}<ArrowRight :size="17" />
-          </button>
-        </div>
-        <div class="board-footnote">
-          <ShieldCheck :size="16" />
-          <p>
-            Real opinions. Testnet records. Calls use testnet gas; there are no
-            stakes or financial rewards.
-          </p>
-          <a href="/docs/litepaper.html"
-            >Understand the pilot <ArrowUpRight :size="14"
-          /></a>
-        </div>
-      </section>
-
-      <section id="record" class="record-section page-width">
-        <div class="record-copy">
-          <p class="eyebrow">YOUR PERSPECTIVE, OVER TIME</p>
-          <h2>A little conviction.<br />A lasting record.</h2>
-          <p>
-            Good thinking is a practice. Keep a public history of your calls,
-            revisit the outcomes, and get to know your own judgment.
-          </p>
-          <button
-            class="button light"
-            @click="verified ? showMyCalls() : openWallet()"
-          >
-            {{ verified ? "Explore my calls" : "Start your record"
-            }}<ArrowUpRight :size="18" /></button
-          ><span class="record-assurance"
-            ><ShieldCheck :size="15" />A signature to sign in. No funds
-            moved.</span
-          >
-        </div>
-        <div class="record-passport">
-          <div class="passport-top">
-            <span class="passport-icon"><Fingerprint :size="27" /></span
-            ><span
-              >THE PERSPECTIVE RECORD<small>{{
-                verified ? shortAddress : "Yours to begin"
-              }}</small></span
-            ><span class="passport-dots">•••</span>
-          </div>
-          <div class="passport-title">
-            Every call<br />says something.<span
-              >About how you see the world.</span
-            >
-          </div>
-          <div class="record-stats">
-            <div>
-              <strong>{{ verified ? (record?.total ?? "—") : "—" }}</strong
-              ><span>Calls made</span>
-            </div>
-            <div>
-              <strong>{{ verified ? (record?.resolved ?? "—") : "—" }}</strong
-              ><span>Resolved</span>
-            </div>
-            <div>
-              <strong>{{ verified ? (record?.correct ?? "—") : "—" }}</strong
-              ><span>Correct</span>
-            </div>
-          </div>
-          <div class="passport-bottom">
-            <span
-              ><i></i
-              >{{
-                verified
-                  ? "Connected & verified"
-                  : "One wallet. Your own history."
-              }}</span
-            ><button v-if="verified" @click="modal = 'account'">
-              Wallet details <ArrowUpRight :size="15" /></button
-            ><Fingerprint v-else :size="17" />
-          </div>
-        </div>
-      </section>
-
-      <section id="how-it-works" class="journey-section page-width">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">FROM A THOUGHT TO A TRACK RECORD</p>
-            <h2>Three steps. All you.</h2>
-          </div>
-          <a class="text-link" href="/docs/litepaper.html"
-            >Read the full story <ArrowUpRight :size="17"
-          /></a>
-        </div>
-        <div class="journey-grid">
-          <article class="journey-card">
-            <div class="journey-top">
-              <span>01 / EXPLORE</span><Compass :size="22" />
-            </div>
-            <div class="journey-visual question-visual" aria-hidden="true">
-              <span class="question-shape">?</span
-              ><span class="tiny-card"
-                ><span>THE NEXT BIG THING</span><i></i><i></i
-                ><b>What's your take? ↗</b></span
+            <div class="board-controls">
+              <div
+                class="category-tabs"
+                role="group"
+                aria-label="Filter forecasts"
               >
-            </div>
-            <h3>Find your question.</h3>
-            <p>{{ steps[0].body }}</p>
-            <a href="#forecasts" class="text-link"
-              >Explore the board <ArrowRight :size="15"
-            /></a>
-          </article>
-          <article class="journey-card">
-            <div class="journey-top">
-              <span>02 / MAKE A CALL</span><Wallet :size="22" />
-            </div>
-            <div class="journey-visual demo-choices">
-              <button
-                :class="{ selected: demoSide }"
-                :aria-pressed="demoSide"
-                @click="demoSide = true"
-              >
-                YES<Check v-if="demoSide" :size="18" /><ArrowUpRight
-                  v-else
-                  :size="18"
-                /></button
-              ><button
-                :class="{ selected: !demoSide }"
-                :aria-pressed="!demoSide"
-                @click="demoSide = false"
-              >
-                NO<Check v-if="!demoSide" :size="18" /><ArrowUpRight
-                  v-else
-                  :size="18"
-                /></button
-              ><span>Try a side · example only</span>
-            </div>
-            <h3>Give it conviction.</h3>
-            <p>{{ steps[1].body }}</p>
-            <span class="journey-note">No stake. Only testnet gas.</span>
-          </article>
-          <article class="journey-card">
-            <div class="journey-top">
-              <span>03 / LOOK BACK</span><Fingerprint :size="22" />
-            </div>
-            <div class="journey-visual outcome-visual" aria-hidden="true">
-              <div>
-                <Check :size="28" /><span
-                  >AN OUTCOME.<br /><strong
-                    >A little more perspective.</strong
-                  ></span
+                <button
+                  v-for="tab in categories"
+                  :key="tab"
+                  :class="{ active: category === tab }"
+                  :aria-pressed="category === tab"
+                  @click="category = tab"
+                >
+                  {{ tab
+                  }}<span v-if="tab === 'My calls' && record">{{
+                    record.total
+                  }}</span>
+                </button>
+              </div>
+              <div class="board-tools">
+                <label class="search-field"
+                  ><Search :size="17" /><input
+                    v-model="search"
+                    type="search"
+                    aria-label="Search forecasts"
+                    placeholder="Search the board…"
+                /></label>
+                <label class="sort-field"
+                  ><SlidersHorizontal :size="16" /><select
+                    v-model="sort"
+                    aria-label="Sort forecasts"
+                  >
+                    <option value="closing">Closing soon</option>
+                    <option value="newest">Newest first</option>
+                    <option value="participation">Most calls</option>
+                  </select></label
                 >
               </div>
-              <span class="outcome-stamp">RECORDED ↗</span>
             </div>
-            <h3>Meet your future self.</h3>
-            <p>{{ steps[2].body }}</p>
-            <a href="#record" class="text-link"
-              >Your record awaits <ArrowRight :size="15"
+            <div class="result-context" aria-live="polite">
+              <span
+                >{{
+                  chainState === "loading"
+                    ? "Loading questions…"
+                    : displayMarkets.length +
+                      (displayMarkets.length === 1
+                        ? " question"
+                        : " questions")
+                }}<span v-if="chainState === 'unavailable'">
+                  / ILLUSTRATIVE EXAMPLES</span
+                ></span
+              >
+              <button v-if="hasFilters" @click="resetFilters">
+                Clear filters <X :size="14" />
+              </button>
+            </div>
+            <div
+              v-if="chainState === 'unavailable'"
+              class="offline-notice"
+              role="status"
+            >
+              <Radio :size="18" />
+              <p>
+                Live data is temporarily unavailable. Browse these read-only
+                examples while we reconnect.
+              </p>
+              <button @click="loadChain()">
+                Try again <RefreshCw :size="15" />
+              </button>
+            </div>
+            <div
+              v-if="chainState === 'loading'"
+              class="loading-desk"
+              role="status"
+              aria-label="Loading live forecasts"
+            >
+              <div v-for="n in 3" :key="n" class="skeleton-row">
+                <span></span><i></i><b></b>
+              </div>
+              <p>Reading the public testnet. This may take a moment.</p>
+            </div>
+            <div v-else-if="displayMarkets.length" class="question-desk">
+              <div class="question-list" aria-label="Questions">
+                <div class="list-caption">
+                  <span>QUESTION / CLOSING DATE</span><span>YES VIEWS</span>
+                </div>
+                <button
+                  v-for="(m, index) in displayMarkets"
+                  :key="m.id"
+                  class="question-row"
+                  :class="{ selected: inspectedMarket?.id === m.id }"
+                  :aria-pressed="inspectedMarket?.id === m.id"
+                  :aria-label="'Read question: ' + m.question"
+                  @click="inspectMarket(m)"
+                >
+                  <span class="question-number">{{
+                    String(index + 1).padStart(2, "0")
+                  }}</span>
+                  <span class="question-row-main">
+                    <span class="question-row-meta"
+                      >{{ m.ticker }} <i>•</i>
+                      {{ chainState === "ready" ? status(m) : "EXAMPLE" }}</span
+                    >
+                    <strong>{{ m.question }}</strong>
+                    <span class="question-row-date"
+                      ><Clock3 :size="13" />{{ dateLabel(m.closesAt)
+                      }}<span
+                        v-if="forecasts[m.id]?.exists"
+                        class="recorded-label"
+                        ><Check :size="12" /> Your call recorded</span
+                      ></span
+                    >
+                  </span>
+                  <span class="question-row-score"
+                    >{{ m.probability === null ? "—" : m.probability
+                    }}<small v-if="m.probability !== null">%</small
+                    ><ArrowUpRight :size="20"
+                  /></span>
+                </button>
+              </div>
+              <section
+                v-if="inspectedMarket"
+                id="question-dossier"
+                class="question-dossier"
+                tabindex="-1"
+                aria-labelledby="dossier-title"
+              >
+                <div class="dossier-top">
+                  <span>UNDER CONSIDERATION</span
+                  ><span class="dossier-asset">{{ inspectedMarket.icon }}</span>
+                </div>
+                <div class="dossier-category">
+                  <span>{{ inspectedMarket.category }}</span
+                  ><span>{{
+                    chainState === "ready"
+                      ? status(inspectedMarket)
+                      : "READ-ONLY EXAMPLE"
+                  }}</span>
+                </div>
+                <h3 id="dossier-title">{{ inspectedMarket.question }}</h3>
+                <div class="dossier-consensus">
+                  <div>
+                    <span>{{
+                      chainState === "ready"
+                        ? "The public view"
+                        : "Illustrative view"
+                    }}</span
+                    ><strong
+                      >{{
+                        inspectedMarket.probability === null
+                          ? "—"
+                          : inspectedMarket.probability + "%"
+                      }}<small>YES</small></strong
+                    >
+                  </div>
+                  <div class="sentiment-bar">
+                    <span
+                      :style="{
+                        width: (inspectedMarket.probability ?? 0) + '%',
+                      }"
+                    ></span>
+                  </div>
+                  <p>
+                    {{
+                      chainState === "ready"
+                        ? inspectedMarket.totalForecasts +
+                          " recorded calls · opinions, not odds"
+                        : "Example data · no live transaction"
+                    }}
+                  </p>
+                </div>
+                <dl class="dossier-facts">
+                  <div>
+                    <dt>Closing date</dt>
+                    <dd>
+                      {{ dateLabel(inspectedMarket.closesAt)
+                      }}<span v-if="inspectedMarket.closesAt"> · UTC</span>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Resolution</dt>
+                    <dd>Public source / pilot operator</dd>
+                  </div>
+                </dl>
+                <button
+                  class="button primary dossier-action"
+                  @click="openForecast(inspectedMarket)"
+                >
+                  {{
+                    chainState !== "ready"
+                      ? "Explore this example"
+                      : inspectedMarket.outcome
+                        ? "See the outcome"
+                        : forecasts[inspectedMarket.id]?.exists
+                          ? "View your call"
+                          : inspectedMarket.closesAt * 1000 <= now
+                            ? "View question"
+                            : "Make your call"
+                  }}<ArrowUpRight :size="19" />
+                </button>
+                <p class="dossier-note">
+                  Read the source. Choose a side. Record your conviction.
+                </p>
+              </section>
+            </div>
+            <div v-else class="empty-state">
+              <component
+                :is="category === 'My calls' ? Fingerprint : Search"
+                :size="34"
+              />
+              <h3>
+                {{
+                  category === "My calls" && !verified
+                    ? "A record starts with you."
+                    : search
+                      ? "No questions match that search."
+                      : category === "My calls"
+                        ? "Your first call is still unwritten."
+                        : "Nothing on this desk. Yet."
+                }}
+              </h3>
+              <p>
+                {{
+                  category === "My calls" && !verified
+                    ? "Connect your wallet to find your public forecasting record."
+                    : "Try another category or clear your filters to return to the board."
+                }}
+              </p>
+              <button
+                class="button primary"
+                @click="
+                  category === 'My calls' && !verified
+                    ? openWallet()
+                    : resetFilters()
+                "
+              >
+                {{
+                  category === "My calls" && !verified
+                    ? "Connect wallet"
+                    : "Explore all questions"
+                }}<ArrowRight :size="17" />
+              </button>
+            </div>
+            <div class="board-footnote">
+              <ShieldCheck :size="16" />
+              <p>
+                Each call uses testnet ETH for gas. No deposits, payouts, or
+                financial rewards.
+              </p>
+              <a href="#how-it-works" @click.prevent="navigate('how-it-works')"
+                >Before your first call <ArrowUpRight :size="14"
+              /></a>
+            </div>
+          </section>
+          <section class="closing-note">
+            <span>THE LONG VIEW</span>
+            <h2>
+              Being right is a moment.<br /><em
+                >Thinking well is a practice.</em
+              >
+            </h2>
+            <a href="#record" @click.prevent="navigate('record')"
+              >Your record starts here <ArrowUpRight :size="20"
             /></a>
-          </article>
-        </div>
-      </section>
+          </section>
+        </template>
 
-      <section id="communities" class="community-section page-width">
-        <div class="community-copy">
-          <p class="eyebrow">BETTER WITH OTHER PERSPECTIVES</p>
-          <h2>Big questions.<br />Different minds.</h2>
-          <p>
-            Send a question to your group chat. Compare your thinking. Sometimes
-            the most interesting part is seeing who disagrees.
-          </p>
-          <div class="community-actions">
-            <a class="button dark" href="#forecasts"
-              >Find a question to share <ArrowUpRight :size="18" /></a
-            ><a
+        <section
+          v-else-if="activeSection === 'record'"
+          id="record"
+          class="inner-page record-page"
+        >
+          <div class="page-heading">
+            <p class="eyebrow">
+              <span class="section-index">02</span> YOUR THINKING, OVER TIME
+            </p>
+            <h1>A record.<br /><em>Not a highlight reel.</em></h1>
+            <p>
+              Every call stays on the page. Revisit the outcomes and get to know
+              your own judgment.
+            </p>
+          </div>
+          <div class="record-ledger">
+            <div class="ledger-identity">
+              <Fingerprint :size="40" />
+              <div>
+                <span>FORECASTER'S RECORD</span
+                ><strong>{{
+                  verified ? shortAddress : "Yours to begin."
+                }}</strong>
+              </div>
+              <span class="ledger-status"
+                ><span
+                  class="status-dot"
+                  :class="{ connected: verified }"
+                ></span
+                >{{
+                  verified ? "Verified wallet" : "Wallet not connected"
+                }}</span
+              >
+            </div>
+            <div class="ledger-stat-grid">
+              <div>
+                <span>01 / CALLS MADE</span
+                ><strong>{{ verified ? (record?.total ?? "—") : "—" }}</strong>
+              </div>
+              <div>
+                <span>02 / RESOLVED</span
+                ><strong>{{
+                  verified ? (record?.resolved ?? "—") : "—"
+                }}</strong>
+              </div>
+              <div>
+                <span>03 / CORRECT</span
+                ><strong>{{
+                  verified ? (record?.correct ?? "—") : "—"
+                }}</strong>
+              </div>
+              <div>
+                <span>04 / CANCELLED</span
+                ><strong>{{
+                  verified ? (record?.cancelled ?? "—") : "—"
+                }}</strong>
+              </div>
+            </div>
+            <div class="ledger-actions">
+              <p>
+                <ShieldCheck :size="16" />Sign in with a free message. Your
+                calls are public and permanent.
+              </p>
+              <button
+                class="button primary"
+                @click="verified ? (modal = 'account') : openWallet()"
+              >
+                {{ verified ? "Wallet details" : "Start your record"
+                }}<ArrowUpRight :size="17" />
+              </button>
+            </div>
+          </div>
+          <div class="section-heading record-heading">
+            <div>
+              <p class="eyebrow">THE ENTRIES</p>
+              <h2>Your calls, in ink.</h2>
+            </div>
+            <a
+              href="#forecasts"
               class="text-link"
-              :href="`https://x.com/${BRAND.handle}`"
+              @click.prevent="navigate('forecasts')"
+              >Back to the board <ArrowUpRight :size="17"
+            /></a>
+          </div>
+          <div
+            v-if="verified && recordState === 'loading'"
+            class="record-empty"
+            role="status"
+          >
+            <LoaderCircle class="spin" :size="30" />
+            <h3>Reading your record.</h3>
+            <p>Checking the public testnet for your calls and outcomes.</p>
+          </div>
+          <div
+            v-else-if="verified && recordState === 'error'"
+            class="record-empty"
+            role="alert"
+          >
+            <Radio :size="30" />
+            <h3>Your record could not be loaded.</h3>
+            <p>
+              The testnet did not return your history. Try again to check your
+              calls.
+            </p>
+            <button class="button primary" @click="retryRecord">
+              Retry record <RefreshCw :size="17" />
+            </button>
+          </div>
+          <div
+            v-else-if="verified && myMarkets.length"
+            class="personal-call-list"
+          >
+            <button v-for="m in myMarkets" :key="m.id" @click="openForecast(m)">
+              <span
+                ><small>{{ status(m) }} / {{ dateLabel(m.closesAt) }}</small
+                ><strong>{{ m.question }}</strong></span
+              ><b
+                >{{ forecasts[m.id].yes ? "YES" : "NO"
+                }}<small
+                  >{{ Number(forecasts[m.id].confidence) }}% confidence</small
+                ></b
+              ><ArrowUpRight :size="22" />
+            </button>
+          </div>
+          <div v-else class="record-empty">
+            <span aria-hidden="true">—</span>
+            <h3>
+              {{
+                verified
+                  ? "A blank page is a good beginning."
+                  : "Your history follows your wallet."
+              }}
+            </h3>
+            <p>
+              {{
+                verified
+                  ? "Find a question worth thinking about. Your first confirmed call will appear here."
+                  : "Connect to see your calls, their outcomes, and your public track record."
+              }}
+            </p>
+            <button
+              class="text-link-button"
+              @click="verified ? browseQuestions() : openWallet()"
+            >
+              {{ verified ? "Find your first question" : "Connect wallet"
+              }}<ArrowRight :size="17" />
+            </button>
+          </div>
+        </section>
+
+        <section
+          v-else-if="activeSection === 'how-it-works'"
+          id="how-it-works"
+          class="inner-page method-page"
+        >
+          <div class="page-heading">
+            <p class="eyebrow">
+              <span class="section-index">03</span> A PRACTICE, NOT A PREDICTION
+              MACHINE
+            </p>
+            <h1>Think it through.<br /><em>Write it down.</em></h1>
+            <p>
+              A good question. An honest opinion. A record you can come back to.
+            </p>
+          </div>
+          <div class="method-list">
+            <article
+              v-for="(step, index) in steps"
+              :key="step.label"
+              class="method-step"
+            >
+              <span class="step-number">0{{ index + 1 }}</span>
+              <div>
+                <p class="eyebrow">{{ step.label }}</p>
+                <h2>{{ step.title }}</h2>
+                <p>{{ step.body }}</p>
+                <span class="step-detail">{{ step.detail }}</span>
+              </div>
+              <div class="step-visual">
+                <template v-if="index === 0"
+                  ><Search :size="44" /><span
+                    >READ THE QUESTION.<br />CHECK THE SOURCE.</span
+                  ></template
+                >
+                <template v-else-if="index === 1"
+                  ><div class="demo-choices">
+                    <button
+                      :class="{ selected: demoSide }"
+                      :aria-pressed="demoSide"
+                      @click="demoSide = true"
+                    >
+                      YES<Check v-if="demoSide" :size="16" /></button
+                    ><button
+                      :class="{ selected: !demoSide }"
+                      :aria-pressed="!demoSide"
+                      @click="demoSide = false"
+                    >
+                      NO<Check v-if="!demoSide" :size="16" />
+                    </button>
+                  </div>
+                  <span>TRY A SIDE / EXAMPLE ONLY</span></template
+                >
+                <template v-else
+                  ><Fingerprint :size="48" /><span
+                    >ONE WALLET.<br />YOUR OWN HISTORY.</span
+                  ></template
+                >
+              </div>
+            </article>
+          </div>
+          <section id="questions" class="faq-section" tabindex="-1">
+            <div class="faq-heading">
+              <p class="eyebrow">IN THE MARGINS</p>
+              <h2>A little<br /><em>clarity.</em></h2>
+              <a class="text-link" href="/docs/litepaper.html"
+                >Read the field notes <ArrowUpRight :size="16"
+              /></a>
+            </div>
+            <div class="faq-list">
+              <details v-for="faq in faqs" :key="faq[0]">
+                <summary>{{ faq[0] }}<Plus :size="20" /></summary>
+                <p>{{ faq[1] }}</p>
+              </details>
+            </div>
+          </section>
+          <a
+            class="button primary method-cta"
+            href="#forecasts"
+            @click.prevent="navigate('forecasts')"
+            >Find your first question <ArrowUpRight :size="18"
+          /></a>
+        </section>
+
+        <section v-else id="communities" class="inner-page community-page">
+          <div class="page-heading">
+            <p class="eyebrow">
+              <span class="section-index">04</span> A PLACE FOR DIFFERENT MINDS
+            </p>
+            <h1>Disagreement.<br /><em>Good company.</em></h1>
+            <p>
+              The most interesting view in the room might be the one that isn't
+              yours.
+            </p>
+          </div>
+          <div class="community-spread">
+            <div class="community-statement">
+              <span>THE CONVERSATION STARTER</span>
+              <h2>“I see it<br /><em>differently.”</em></h2>
+              <p>
+                Send a question to your group chat. Compare your answers. Come
+                back when the outcome is known.
+              </p>
+              <a
+                class="button primary"
+                href="#forecasts"
+                @click.prevent="navigate('forecasts')"
+                >Find a question to share <ArrowUpRight :size="18"
+              /></a>
+            </div>
+            <div class="community-instructions">
+              <p class="eyebrow">TAKE THE QUESTION WITH YOU</p>
+              <ol>
+                <li>
+                  <b>01</b
+                  ><span
+                    >Open a live question.<small
+                      >Find a question on the board that deserves a second
+                      opinion.</small
+                    ></span
+                  >
+                </li>
+                <li>
+                  <b>02</b
+                  ><span
+                    >Copy its link.<small
+                      >Use “Share question” in the question's detail
+                      panel.</small
+                    ></span
+                  >
+                </li>
+                <li>
+                  <b>03</b
+                  ><span
+                    >Compare perspectives.<small
+                      >Send it to your own group and see where you agree.</small
+                    ></span
+                  >
+                </li>
+              </ol>
+              <a
+                class="social-link"
+                :href="'https://x.com/' + BRAND.handle"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><span
+                  >X / FOLLOW THE EXPERIMENT<strong
+                    >@{{ BRAND.handle }}</strong
+                  ></span
+                ><ArrowUpRight :size="26"
+              /></a>
+            </div>
+          </div>
+          <div class="roadmap-line">
+            <span>ON THE HORIZON</span>
+            <p>
+              Dedicated community spaces and chat integrations are on the
+              roadmap.
+            </p>
+            <a href="/docs/litepaper.html#roadmap"
+              >See what's next <ArrowUpRight :size="16"
+            /></a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="footer-top">
+          <a
+            class="footer-brand"
+            href="#forecasts"
+            @click.prevent="navigate('forecasts')"
+            >{{ BRAND.name }}<span>{{ BRAND.tagline }}</span></a
+          >
+          <div class="footer-links">
+            <a href="/docs/litepaper.html"
+              >Field notes <ArrowUpRight :size="13" /></a
+            ><a
+              href="/docs/business-plan.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              >Find us on X <ArrowUpRight :size="16"
+              >Business plan <ArrowUpRight :size="13" /></a
+            ><a
+              v-if="deployment"
+              :href="NETWORK.explorer + '/address/' + deployment.address"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Pilot contract <ArrowUpRight :size="13" /></a
+            ><a href="/docs/privacy.html">Privacy <ArrowUpRight :size="13" /></a
+            ><a
+              :href="'https://x.com/' + BRAND.handle"
+              target="_blank"
+              rel="noopener noreferrer"
+              >X / Twitter <ArrowUpRight :size="13"
             /></a>
           </div>
-          <p class="roadmap-note">
-            Community spaces and chat integrations are on the roadmap.
-            <a href="/docs/litepaper.html#roadmap"
-              >See what's next <ArrowRight :size="13"
-            /></a>
+        </div>
+        <div class="footer-bottom">
+          <span>© {{ new Date().getFullYear() }} {{ BRAND.name }}</span>
+          <p>
+            Independent project. Not affiliated with Robinhood.<br />Public
+            testnet pilot · No real-money trading · No token announced.
           </p>
+          <span>LEAVE A RECORD. ↗</span>
         </div>
-        <div class="conversation-art" aria-hidden="true">
-          <div class="conversation-bubble bubble-one">
-            I see it<br /><strong>differently.</strong><span>↗</span>
-          </div>
-          <div class="conversation-bubble bubble-two">
-            That's what<br /><strong>makes it interesting.</strong
-            ><span>✳</span>
-          </div>
-          <span class="conversation-star">✳</span>
-        </div>
-      </section>
-
-      <section id="questions" class="faq-section page-width">
-        <div class="faq-heading">
-          <p class="eyebrow">A LITTLE CLARITY</p>
-          <h2>Before you<br />make a call.</h2>
-          <p>The things you should know, out in the open.</p>
-          <a class="text-link" href="/docs/litepaper.html"
-            >Read the manifesto <ArrowUpRight :size="16"
-          /></a>
-        </div>
-        <div class="faq-list">
-          <details v-for="faq in faqs" :key="faq[0]">
-            <summary>{{ faq[0] }}<Plus :size="20" /></summary>
-            <p>{{ faq[1] }}</p>
-          </details>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="footer-main page-width">
-        <div>
-          <a href="#main" class="wordmark"
-            ><img src="/brand/mark.svg" alt="" width="36" height="36" />{{
-              BRAND.name.toLowerCase()
-            }}</a
-          >
-          <p>{{ BRAND.tagline }}</p>
-          <span>Independent thinking. Public by design.</span>
-        </div>
-        <div class="footer-links">
-          <a href="/docs/litepaper.html"
-            >Manifesto <ArrowUpRight :size="14" /></a
-          ><a
-            href="/docs/business-plan.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Business plan <ArrowUpRight :size="14" /></a
-          ><a
-            v-if="deployment"
-            :href="`${NETWORK.explorer}/address/${deployment.address}`"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Pilot contract <ArrowUpRight :size="14" /></a
-          ><a href="/docs/privacy.html">Privacy <ArrowUpRight :size="14" /></a
-          ><a
-            :href="`https://x.com/${BRAND.handle}`"
-            target="_blank"
-            rel="noopener noreferrer"
-            >X / Twitter <ArrowUpRight :size="14"
-          /></a>
-        </div>
-      </div>
-      <div class="footer-bottom page-width">
-        <span>© {{ new Date().getFullYear() }} {{ BRAND.name }}</span>
-        <p>
-          Independent project. Not affiliated with Robinhood.<br />Public
-          testnet pilot · No real-money trading · No token announced.
-        </p>
-        <span class="footer-signoff">THE FUTURE IS OPEN. ↗</span>
-      </div>
-    </footer>
+      </footer>
+    </div>
     <nav class="mobile-navigation" aria-label="Mobile navigation">
       <a
         v-for="item in navigation"
-        :key="item.id"
-        :href="`#${item.id}`"
+        :key="item.id" :aria-label="item.label"
+        :href="'#' + item.id"
         :class="{ active: activeSection === item.id }"
-        :aria-current="activeSection === item.id ? 'location' : undefined"
-        @click="navigate(item.id)"
-        ><component :is="item.icon" :size="19" /><span>{{
+        :aria-current="activeSection === item.id ? 'page' : undefined"
+        @click.prevent="navigate(item.id)"
+        ><component :is="item.icon" :size="20" /><span>{{
           item.label
         }}</span></a
       >
     </nav>
   </div>
   <Transition name="modal"
-    ><div v-if="modal" class="modal-backdrop" @mousedown.self="closeModal">
+    ><div
+      v-if="modal"
+      class="modal-backdrop"
+      :class="{ 'forecast-backdrop': modal === 'forecast' }"
+      @mousedown.self="closeModal"
+    >
       <section
         ref="dialogRef"
         class="modal-panel"
+        :class="{ 'forecast-panel': modal === 'forecast' }"
         role="dialog"
         aria-modal="true"
         aria-labelledby="dialog-title"
@@ -1136,6 +1394,22 @@ onUnmounted(() => {
               <strong>{{ record?.correct ?? "—" }}</strong
               ><span>Correct</span>
             </div>
+          </div>
+          <p v-if="recordState === 'loading'" role="status">
+            Reading your public record…
+          </p>
+          <div
+            v-else-if="recordState === 'error'"
+            role="alert"
+            class="error-message"
+          >
+            <p>
+              Your record could not be loaded. This does not mean you have no
+              calls.
+            </p>
+            <button class="button" @click="retryRecord">
+              Retry record <RefreshCw :size="16" />
+            </button>
           </div>
           <p>
             Your record covers all calls in this pilot contract. Cancelled:

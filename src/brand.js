@@ -1,6 +1,6 @@
 export const BRAND = {
-  name: "Quorivista",
-  domain: "quorivista.xyz",
-  handle: "quorivista",
-  tagline: "A view worth recording.",
+  name: "Opiquill",
+  domain: "opiquill.xyz",
+  handle: "opiquill",
+  tagline: "Give your view a record.",
 };

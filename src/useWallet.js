@@ -24,6 +24,7 @@ export const deployment = ref(null);
 export const chainMarkets = ref([]);
 export const chainState = ref("loading");
 export const record = ref(null);
+export const recordState = ref("idle");
 export const forecasts = ref({});
 export const shortAddress = computed(() =>
   address.value
@@ -93,6 +94,7 @@ function reset(reason = "") {
   address.value = "";
   verified.value = false;
   record.value = null;
+  recordState.value = "idle";
   forecasts.value = {};
   walletBusy.value = false;
   walletError.value = reason;
@@ -287,6 +289,7 @@ export async function loadChain() {
   const attempt = ++loadEpoch;
   ++recordEpoch;
   chainState.value = "loading";
+  if (verified.value) recordState.value = "loading";
   let rpc;
   try {
     const response = await fetch("/deployment.json", {
@@ -349,13 +352,19 @@ export async function loadChain() {
       record.value = null;
       forecasts.value = {};
       chainState.value = "unavailable";
+      recordState.value = verified.value ? "error" : "idle";
     }
     return false;
   }
 }
 
 export async function refreshRecord() {
-  if (!readContract || !verified.value || !address.value) return;
+  if (!verified.value || !address.value) return;
+  if (!readContract) {
+    recordState.value = chainState.value === "loading" ? "loading" : "error";
+    return;
+  }
+  recordState.value = "loading";
   const account = address.value,
     session = sessionEpoch,
     request = ++recordEpoch,
@@ -385,10 +394,12 @@ export async function refreshRecord() {
       total: Number(data.totalForecasts ?? data[3]),
     };
     forecasts.value = Object.fromEntries(entries);
+    recordState.value = "ready";
   } catch {
     if (current()) {
       record.value = null;
       forecasts.value = {};
+      recordState.value = "error";
     }
   }
 }
