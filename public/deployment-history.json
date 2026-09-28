@@ -1,0 +1,12 @@
+{
+  "status": "historical-read-only",
+  "chain": "robinhood-evm",
+  "network": "Robinhood Chain Testnet",
+  "chainId": 46630,
+  "contractName": "ForecastRegistry",
+  "address": "0x7fC25ad231E7a3c21B44DdE766F77c43C6F9B66E",
+  "deploymentTransaction": "0x6a6d7994d85a11cd696a139ffc797b733bca814bcff6097c2daca7d8cbb47033",
+  "deploymentRecord": "/contracts/deployments/robinhood-testnet.json",
+  "explorer": "https://explorer.testnet.chain.robinhood.com/address/0x7fC25ad231E7a3c21B44DdE766F77c43C6F9B66E?tab=contract",
+  "note": "Retained for migration and audit context. The active frontend does not submit EVM transactions."
+}

@@ -1,6 +1,8 @@
 export const BRAND = {
-  name: "Opiquill",
-  domain: "opiquill.xyz",
-  handle: "opiquill",
-  tagline: "Give your view a record.",
+  name: "Kastlyra",
+  slug: "kastlyra",
+  ticker: "KLYR",
+  domain: "kastlyra.xyz",
+  handle: "kastlyra",
+  tagline: "Make the call. Track the signal.",
 };

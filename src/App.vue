@@ -28,7 +28,8 @@ import {
 } from "lucide-vue-next";
 import { BRAND } from "./brand";
 import {
-  NETWORK,
+  explorerAddress,
+  explorerTransaction,
   address,
   verified,
   walletBusy,
@@ -114,7 +115,7 @@ const examples = [
     category: "Ecosystem",
     icon: "✳",
     probability: 72,
-    source: "Explore the Robinhood Chain ecosystem",
+    source: "Explore the Solana ecosystem",
   },
 ];
 const allMarkets = computed(() =>
@@ -228,7 +229,7 @@ const steps = [
     detail: "Check the evidence before you choose a side.",
   },
   {
-    title: "Give your view a record.",
+    title: "Make the call. Track the signal.",
     body: "Choose YES or NO, set your confidence, and confirm with your wallet. One call per question, recorded on testnet.",
     label: "Commit",
     detail: "A call is an opinion. Only testnet gas is used.",
@@ -243,11 +244,11 @@ const steps = [
 const faqs = computed(() => [
   [
     `What is ${BRAND.name}?`,
-    `${BRAND.name} is a social forecasting experiment on Robinhood Chain. Make a market call, put it onchain, and build a track record that can be checked. The current release is a public testnet pilot.`,
+    `${BRAND.name} is an onchain social forecasting terminal on Solana. Make a market call, sign it with your wallet, and build a track record that can be checked. The current release is a devnet pilot.`,
   ],
   [
     "Am I risking real money?",
-    "No. This pilot records opinions, not financial positions. There are no deposits, wagers, payouts, or token approvals. Calls cost only Robinhood testnet ETH gas. Testnet ETH has no monetary value.",
+    "No. This pilot records opinions, not financial positions. There are no deposits, wagers, payouts, or token approvals. Calls will use Solana devnet SOL only once a program is deployed. Devnet assets have no monetary value.",
   ],
   [
     "Who resolves the questions?",
@@ -262,8 +263,8 @@ const faqs = computed(() => [
     "No token, airdrop, or financial rewards are announced. Participation builds a testnet record and helps evaluate the product. There is no promise of future eligibility or value.",
   ],
   [
-    `Is ${BRAND.name} affiliated with Robinhood?`,
-    `${BRAND.name} is an independent project. It is not affiliated with, sponsored by, or endorsed by Robinhood. Community spaces, chat integrations, and paid analytics are roadmap features.`,
+    `Is ${BRAND.name} affiliated with a wallet or protocol?`,
+    `${BRAND.name} is an independent project. It is not affiliated with any wallet, protocol, exchange, or token issuer. Community spaces, chat integrations, and paid analytics are roadmap features.`,
   ],
 ]);
 function resetFilters() {
@@ -360,7 +361,7 @@ async function submit() {
   }
 }
 async function share(m) {
-  const text = `${m.question}\nMake your own call on ${BRAND.name}: ${location.origin}/?market=${m.id}#forecasts\nRobinhood Chain testnet · No real-money stakes`;
+  const text = `${m.question}\nMake your own call on ${BRAND.name}: ${location.origin}/?market=${m.id}#forecasts\nSolana devnet pilot · No real-money stakes`;
   try {
     await navigator.clipboard.writeText(text);
     copied.value = true;
@@ -495,7 +496,7 @@ onUnmounted(() => {
         :aria-label="BRAND.name + ' home'"
         @click.prevent="navigate('forecasts')"
       >
-        <img src="/brand/mark.svg?v=opiquill" alt="" width="42" height="42" />
+        <img src="/brand/mark.svg?v=kastlyra" alt="" width="42" height="42" />
         <span>{{ BRAND.name }}</span>
       </a>
       <span class="rail-caption">A PUBLIC THINKING ROOM</span>
@@ -523,7 +524,7 @@ onUnmounted(() => {
         <a href="/docs/litepaper.html"
           >Read the field notes <ArrowUpRight :size="14"
         /></a>
-        <span class="rail-edition">ROBINHOOD CHAIN / TESTNET</span>
+        <span class="rail-edition">SOLANA / DEVNET</span>
       </div>
     </aside>
 
@@ -535,7 +536,7 @@ onUnmounted(() => {
           @click.prevent="navigate('forecasts')"
         >
           <img
-            src="/brand/mark.svg?v=opiquill"
+            src="/brand/mark.svg?v=kastlyra"
             alt=""
             width="30"
             height="30"
@@ -546,7 +547,7 @@ onUnmounted(() => {
             class="status-dot"
             :class="{ connected: chainState === 'ready' }"
           ></span>
-          <span>THE FORECASTING EXPERIMENT</span
+          <span>SOLANA FORECAST TERMINAL</span
           ><span class="edition-divider">/</span><span>VOL. 001</span>
         </div>
         <button
@@ -714,8 +715,8 @@ onUnmounted(() => {
             >
               <Radio :size="18" />
               <p>
-                Live data is temporarily unavailable. Browse these read-only
-                examples while we reconnect.
+                The Solana program is not deployed yet. Browse read-only market
+                examples while the devnet build is prepared.
               </p>
               <button @click="loadChain()">
                 Try again <RefreshCw :size="15" />
@@ -730,7 +731,7 @@ onUnmounted(() => {
               <div v-for="n in 3" :key="n" class="skeleton-row">
                 <span></span><i></i><b></b>
               </div>
-              <p>Reading the public testnet. This may take a moment.</p>
+              <p>Checking Solana devnet configuration. This may take a moment.</p>
             </div>
             <div v-else-if="displayMarkets.length" class="question-desk">
               <div class="question-list" aria-label="Questions">
@@ -897,8 +898,8 @@ onUnmounted(() => {
             <div class="board-footnote">
               <ShieldCheck :size="16" />
               <p>
-                Each call uses testnet ETH for gas. No deposits, payouts, or
-                financial rewards.
+                The Solana program is pending deployment. No deposits, payouts, or
+                financial rewards are enabled.
               </p>
               <a href="#how-it-works" @click.prevent="navigate('how-it-works')"
                 >Before your first call <ArrowUpRight :size="14"
@@ -1251,7 +1252,7 @@ onUnmounted(() => {
               >Business plan <ArrowUpRight :size="13" /></a
             ><a
               v-if="deployment"
-              :href="NETWORK.explorer + '/address/' + deployment.address"
+              :href="explorerAddress(deployment.address)"
               target="_blank"
               rel="noopener noreferrer"
               >Pilot contract <ArrowUpRight :size="13" /></a
@@ -1267,8 +1268,7 @@ onUnmounted(() => {
         <div class="footer-bottom">
           <span>© {{ new Date().getFullYear() }} {{ BRAND.name }}</span>
           <p>
-            Independent project. Not affiliated with Robinhood.<br />Public
-            testnet pilot · No real-money trading · No token announced.
+            Independent Solana devnet pilot.<br />No real-money trading · No token announced.
           </p>
           <span>LEAVE A RECORD. ↗</span>
         </div>
@@ -1318,7 +1318,7 @@ onUnmounted(() => {
           <p class="eyebrow">YOUR RECORD STARTS HERE</p>
           <h2 id="dialog-title">Bring your perspective.</h2>
           <p>
-            Connect your Ethereum-compatible wallet, then sign a free message to
+            Connect Phantom or Solflare, then sign a free message to
             verify it's yours. No funds move when you sign in.
           </p>
           <div v-if="wallets.length" class="wallet-options">
@@ -1341,10 +1341,10 @@ onUnmounted(() => {
             <p>Install a wallet, then come back to start your record.</p>
             <a
               class="button primary"
-              href="https://metamask.io/download/"
+              href="https://phantom.app/download"
               target="_blank"
               rel="noopener noreferrer"
-              >Get MetaMask <ArrowUpRight :size="17" /></a
+              >Get Phantom <ArrowUpRight :size="17" /></a
             ><button class="text-link-button" @click="discoverWallets">
               Check again <RefreshCw :size="15" />
             </button>
@@ -1357,8 +1357,8 @@ onUnmounted(() => {
             {{ walletError }}
           </p>
           <p class="dialog-note">
-            We'll request Robinhood Chain Testnet (46630). Onchain calls need
-            testnet ETH for gas.
+            We'll request Solana Devnet. Calls will use devnet SOL for fees after
+            the forecasting program is deployed.
           </p>
           <button
             v-if="walletReturn && chosen"
@@ -1376,7 +1376,7 @@ onUnmounted(() => {
           <h2 id="dialog-title">A history that's yours.</h2>
           <a
             class="account-address"
-            :href="`${NETWORK.explorer}/address/${address}`"
+            :href="explorerAddress(address)"
             target="_blank"
             rel="noopener noreferrer"
             >{{ shortAddress }}<ExternalLink :size="15"
@@ -1630,7 +1630,7 @@ onUnmounted(() => {
                     visible.
                   </li>
                   <li>
-                    <Check :size="15" />No stake or payout. Only testnet ETH
+                    <Check :size="15" />No stake or payout. Devnet SOL only after deployment
                     gas.
                   </li>
                 </ul>
@@ -1680,7 +1680,7 @@ onUnmounted(() => {
             ><a
               v-if="txHash"
               class="transaction-link"
-              :href="`${NETWORK.explorer}/tx/${txHash}`"
+              :href="explorerTransaction(txHash)"
               target="_blank"
               rel="noopener noreferrer"
               >{{
@@ -1693,10 +1693,10 @@ onUnmounted(() => {
                   copied ? "Link copied!" : "Share question"
                 }}</button
               ><a
-                href="https://faucet.testnet.chain.robinhood.com"
+                href="https://faucet.solana.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                >Get testnet ETH <ArrowUpRight :size="14"
+                >Get devnet SOL <ArrowUpRight :size="14"
               /></a>
             </div>
           </template>
